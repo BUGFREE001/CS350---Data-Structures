@@ -1,0 +1,431 @@
+#1
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+struct node //create our node
+{
+   int num;
+   struct node *ptr;
+};
+
+
+void printout(struct node* head); //prototype of the function
+void deleteNode(struct node * head,struct node * temp);
+struct node* makeNode(int i);
+void insertFront(struct node** head,struct node** inData,struct node** temp );
+
+
+int main()
+{
+   struct node *head,*inData,*temp=0,*deleteMe; //pointers for linked list
+   int choice,i,numberOfNode; //it will keep track of node numbe
+head = 0; //initaited head with 0
+   bool listCreated=false;
+   inData = makeNode(1);
+insertFront(&head,&inData,&temp);
+inData = makeNode(2);
+insertFront(&head,&inData,&temp);
+inData = makeNode(1);
+insertFront(&head,&inData,&temp);
+inData = makeNode(3);
+insertFront(&head,&inData,&temp);
+  
+   temp->ptr = 0; //set 0 to last node so that we can identify last node.
+printf("\nList before delete");
+printout(head);
+printf("\nDeleting 1......");
+deleteMe = makeNode(1);
+  
+printf("\n\nList after deleting......");
+deleteNode(head,deleteMe);
+printout(head);
+return 0;
+
+
+}
+struct node* makeNode(int i){
+struct node * nodeCreat;
+nodeCreat = (struct node *)malloc(sizeof(struct node)); //allocate memory to new node
+nodeCreat-> num = i;
+return nodeCreat;
+
+}
+
+void insertFront(struct node** head,struct node** inData,struct node** temp ){
+if (*head != 0) //if list is not empty
+               {
+                   (*temp)->ptr = *inData;
+                   *temp = *inData;
+               }
+               else //if list is empty
+               {
+                   *head = *temp = *inData;
+               }
+
+}
+
+void printout(struct node * head){
+   struct node *temp;
+   temp = head;
+   int count=0;
+printf("\n");
+   while (temp != 0)
+   {
+       printf("%d ",temp->num);
+       temp = temp -> ptr;
+       count++;
+if(count==10){
+printf("\n");
+count=0;
+}
+   }
+
+
+}
+
+
+void deleteNode(struct node * head,struct node * temp){
+while(head->num == temp->num)
+{  
+  
+struct node * deleting = temp;
+/* Copy the data of next node to head */
+head->num = head->ptr->num;
+
+// store address of next node
+deleting = head->ptr;
+
+// Remove the link of next node
+head->ptr = head->ptr->ptr;
+
+// free memory
+free(deleting);
+
+}
+
+
+struct node *prev = head;
+while(prev->ptr != NULL){
+   if (prev->ptr->num == temp->num){
+       // Remove node from Linked List
+        prev->ptr = prev->ptr->ptr;
+      
+       }
+       prev = prev->ptr;
+   }
+  
+
+return;
+}
+
+
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+#2
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node
+{
+    int data;
+    struct Node *next;
+};
+
+void push(struct Node** head_ref, int new_data)
+{
+    struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
+    new_node->data = new_data;
+    new_node->next = (*head_ref);
+    (*head_ref)    = new_node;
+}
+
+void Delete_Node_value(struct Node **head_ref, int key)
+{
+struct Node* temp = *head_ref, *prev;
+    while (temp != NULL && temp->data == key)
+    {
+        *head_ref = temp->next;
+        free(temp);
+        temp = *head_ref;
+    }
+
+    while (temp != NULL)
+    {
+        while (temp != NULL && temp->data != key)
+        {
+            prev = temp;
+            temp = temp->next;
+        }
+
+        if (temp == NULL) return;
+        prev->next = temp->next;
+        free(temp);
+    temp = prev->next;
+    }
+}
+
+void printList(struct Node *node)
+{
+    while (node != NULL)
+    {
+        printf(" %d ", node->data);
+        node = node->next;
+    }
+}
+
+int main()
+{
+struct Node* head = NULL;   
+
+    push(&head, 0);
+    push(&head, 2);
+    push(&head, 3);
+    push(&head, 2);
+    push(&head, 8);
+    push(&head, 1);
+    push(&head, 2);
+    push(&head, 2);   
+
+    int key = 2;   
+
+    puts("Created Linked List: ");
+    printList(head);   
+    Delete_Node_value(&head, key);
+    puts("\nLinked List after Deletion: ");   
+    printList(head);
+
+    return 0;
+
+}
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+
+#3
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+struct node{
+int data;
+node* next;
+};
+
+node* newNode(int data)
+{
+node* temp= new node();
+temp->data=data;
+temp->next=NULL;
+return temp;
+}
+
+void Delete_Dupl_Node(node **head)
+{
+unordered_map<int,int> count_occurence;
+node* temp = *head;
+while(temp!=NULL)
+{
+count_occurence[temp->data]++; // count number of occurence of each element
+temp=temp->next;
+}
+temp=*head;
+node* prev=*head;
+while(temp!=NULL)
+{
+if(count_occurence[temp->data]>1) //its duplicate is present
+{
+count_occurence[temp->data]--;
+if(temp==*head)
+{
+*head=(*head)->next; //head node is duplicate node so transfer head pointer to next node
+free(temp); //release the duplicate node
+temp=*head; // pointing temp to new head node
+prev=*head;
+}
+else
+{
+prev->next=temp->next;
+free(temp);
+temp=prev->next;
+}
+}
+else
+{
+prev=temp;
+temp=temp->next;
+}
+}
+}
+void printList(node* head)
+{
+node* temp=head;
+while(temp!=NULL)
+{
+cout<<temp->data<<" ";
+temp=temp->next;
+}
+}
+int main() {
+// List: 1->2->3->1->1->4->3->NULL
+   node* head=newNode(1);
+   node* temp=head;
+   temp->next=newNode(2);
+   temp=temp->next;
+   temp->next=newNode(3);
+   temp=temp->next;
+   temp->next=newNode(1);
+   temp=temp->next;
+   temp->next=newNode(1);
+   temp=temp->next;
+   temp->next=newNode(4);
+   temp=temp->next;
+   temp->next=newNode(3);
+   temp=temp->next;
+   cout<<"Initial list is: ";
+   printList(head);
+   cout<<endl;
+   Delete_Dupl_Node(&head);
+   cout<<"List after removing duplicates: ";
+   printList(head);
+   
+   return 0;
+}
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+
+
+#4
+
+
+#include<stdio.h>
+#include<stdlib.h>
+
+/* Link list node */
+struct Node
+{
+int data;
+struct Node* next;
+};
+
+/* Function to reverse a linked list after getting data */
+void Reverse_Node(struct Node* head)
+{
+if (head == NULL)
+return;
+  
+// print the list after the head node is declared
+Reverse_Node(head->next);
+  
+// After everything else is printed, print head
+  
+printf("%d ->", head->data);
+}
+
+void push_Node(struct Node** head_1, char new_data) //push data to a link list
+{
+struct Node* new_node =
+(struct Node*) malloc(sizeof(struct Node)); //allocate the memory to node
+
+
+new_node->data = new_data; //set the data
+
+
+new_node->next = (*head_1); //takes the new node to next of the node
+(*head_1) = new_node;
+}
+
+int main()
+{
+// create linked list 1->2->3->4
+struct Node* head = NULL;
+printf("head-> ");
+push_Node(&head, 3); ////push node 3 to after 2 on the link list so the final link list will be 1->2->3
+push_Node(&head, 2); //push node 2 to after 1 on the link list
+push_Node(&head, 1); //push node 1 to starting of link list
+  
+Reverse_Node(head);
+printf("null");
+
+return 0;
+}
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+
+
+#5
+
+
+
+
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef struct node{
+   int data;
+   struct node*next;
+} node;
+
+node* insert(node*head ,int item){
+   node*newNode = (node*)malloc(sizeof(node));
+   newNode->data = item;
+   newNode->next = NULL;
+  
+   if(head==NULL)return newNode;
+  
+   node*current = head;
+   while(current->next!=NULL)current = current->next;
+  
+   current->next = newNode;
+   return head;
+}
+
+float Average_List(node* head){
+   float sum=0;
+   int count = 0;
+  
+   while(head){
+       sum+=head->data;
+       count++;
+       head = head->next;
+   }
+  
+   if(count==0)return 0;
+   return sum/count;
+}
+
+int main(){
+   node* head = NULL;
+  
+   head = insert(head , 1);
+   head = insert(head , 2);
+   head = insert(head , 3);
+  
+   printf("Average of linked list : %.2f", Average_List(head));
+   
+   return 0;
+}
