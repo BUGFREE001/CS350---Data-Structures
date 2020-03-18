@@ -1,0 +1,225 @@
+#3
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+//template for Node
+struct Node {
+int data; //data variable to store data
+struct Node *next; //pointer variable to hold next node
+};
+int main()
+{
+   struct Node* head = NULL; //declaring variable head for struct Node type
+   struct Node* tail = NULL; //declaring variable tail for struct Node type
+   int n,i,m;
+   printf("Enter total number of monkeys in a group: ");
+   scanf("%d",&n); //reading n value
+   printf("Enter m value: ");
+   scanf("%d",&m); //reading m value
+   for(i=0;i<n;i++) //inserting nodes into circular linked list
+   {
+       if(head==NULL) //if is is first node in circular linked list
+       {
+           head=(struct Node*)malloc(sizeof(struct Node)); //allocating memory for node
+           head->data=i; //setting data
+           head->next=head; //setting next to itself
+           tail=head; //settin tail to head
+       }      
+       else
+       {
+          
+           struct Node* newnode=(struct Node*)malloc(sizeof(struct Node)); //allocating memory
+           newnode->data=i; //setting data
+           newnode->next=tail->next; //setting newnode next to tail node next
+           tail->next=newnode; //setting tailnode next to newnode
+           tail=newnode; //setting tail node to newnode
+
+       }
+   }
+  
+   struct Node* temp1=head,*temp2=head;
+   while(temp1->next!=temp1) //iterating through circular list.
+   {
+       int count=1;
+       while(count!=m) //looping until we reach m nodes
+       {
+           temp2=temp1; //storing previous node of temp1
+           temp1=temp1->next; //moving to next node of temp1
+           count++; //incrementing count
+       }  
+       temp2->next=temp1->next; //deleting mth node by making prevoius of temp1 node to point next of temp1
+       temp1=temp2->next; //moving step forward in circular linked list
+   }
+   printf("\n");
+   printf("The king will be %d",temp1->data); //printing the king
+  
+  
+}
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+
+
+# 4     &     # 5
+
+
+
+
+
+#include<stdio.h>
+#include<stdlib.h>
+struct node
+{
+   char ch;
+   struct node *link;
+};
+struct node * createNode(char );                               // function which creates a Node of type struct node *
+struct node * createLL1();                                       // function which creates a LinkedList1
+struct node * createLL2();                                       // function which creates a LinkedList2
+void printLL(struct node *);                                   // function which prints the LinkedList
+struct node * commElem(struct node *,struct node *);           // function that finds and returns commonElements of 2 LinkedLists
+struct node * diffElem_LL(struct node *,struct node *);           // function that finds and returns diffElements of 2 LinkedLists
+int main()
+{
+   struct node *l=createLL1();
+   struct node *m=createLL2();
+   printLL(l);
+   printLL(m);
+   struct node *commonElements=commElem(l,m);
+   printLL(commonElements);
+   struct node *diffElements=diffElem_LL(l,m);
+   printLL(diffElements);
+}
+struct node * createLL1()
+{
+   struct node *head=createNode('G');
+   head->link=createNode('O');
+   head->link->link=createNode('O');
+   head->link->link->link=createNode('D');
+   return head;
+}
+struct node * createLL2()
+{
+   struct node *head=createNode('G');
+   head->link=createNode('O');
+   head->link->link=createNode('o');
+   head->link->link->link=createNode('g');
+   head->link->link->link->link=createNode('L');
+   head->link->link->link->link->link=createNode('E');
+   return head;
+}
+struct node * createNode(char ch)
+{
+   struct node *head=(struct node *)malloc(sizeof(struct node));
+   head->ch=ch;
+   head->link=NULL;
+   return head;
+}
+struct node * commElem(struct node *l,struct node *m)
+{
+   struct node *head=NULL,*tail=NULL;
+   int hash[256]={0},i=0;
+   while(l)
+   {
+       hash[l->ch]=1;               // store the occurences of characters in hash1 of linkedlist 1
+       l=l->link;
+   }
+   while(m)
+   {
+       if(hash[m->ch]==1)           // if any char is present already in hash then it is the common element of both linkedlists
+       {
+           struct node *temp=createNode(m->ch);   // so add the node into new list
+           if(!head)
+           {
+               head=temp;
+               tail=temp;
+           }
+           else
+           {
+               tail->link=temp;
+               tail=temp;
+           }
+       }
+       m=m->link;
+   }
+   return head;               // return head pointer of commElem list
+}
+struct node * diffElem_LL(struct node *l,struct node *m)
+{
+   struct node *head=NULL,*tail=NULL,*node=NULL;
+   int hash1[256]={0},hash2[256]={0},i=0;
+   node=l;
+   while(node)                          
+   {
+       hash1[node->ch]=1;                   // store the occurences of characters in hash1 of linkedlist 1
+       node=node->link;
+   }
+   node=m;
+   while(node)
+   {
+       hash2[node->ch]=1;                   // store the occurences of characters in hash1 of linkedlist 2
+       node=node->link;
+   }
+   while(l)                          
+   {
+       if(hash1[l->ch]!=hash2[l->ch])       // if any character of l list is not found in m then add into newList
+       {
+           struct node *temp=createNode(l->ch);
+           if(!head)
+           {
+               head=temp;
+               tail=temp;
+           }
+           else
+           {
+               tail->link=temp;
+               tail=temp;
+           }
+       }
+       l=l->link;
+   }
+   while(m)                          
+   {
+       if(hash1[m->ch]!=hash2[m->ch])       // if any character of m list is not found in l then add into newList
+       {
+           struct node *temp=createNode(m->ch);
+           if(!head)
+           {
+               head=temp;
+               tail=temp;
+           }
+           else
+           {
+               tail->link=temp;
+               tail=temp;
+           }
+       }
+       m=m->link;
+   }
+   return head;           // return head pointer of diffElem_LL list
+}
+void printLL(struct node *head)
+{
+   printf("Head-> ");
+   while(head)
+   {
+       printf("%c ",head->ch);
+       head=head->link;
+       if(head)
+           printf("-> ");
+   }
+   printf("-> NULL\n");
+}
+
+
+
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------
