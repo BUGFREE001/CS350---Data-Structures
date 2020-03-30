@@ -1,0 +1,248 @@
+#1
+
+
+
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef struct node{
+   char data;
+   struct node*next;
+} node;
+
+node* append(node*head ,char item){
+   node*newNode = (node*)malloc(sizeof(node));
+   newNode->data = item;
+   newNode->next = NULL;
+  
+   if(head==NULL)return newNode;
+  
+   node*current = head;
+   while(current->next!=NULL)current = current->next;
+  
+   current->next = newNode;
+   return head;
+}
+node* insertElem(node*head , int position , char item){
+   node*newNode = (node*)malloc(sizeof(node));
+   newNode->data = item;
+   newNode->next = NULL;
+  
+   if(position ==1){
+       newNode->next = head;
+       head = newNode;
+       return head;
+   }
+   node*current = head;
+  
+   while(current!=NULL && position>2){
+       current = current->next;
+       position--;
+   }
+  
+   if(current == NULL)return head;
+   newNode->next = current->next;
+   current->next = newNode;
+   return head;
+}
+
+float Average_List(node* head){
+   float sum=0;
+   int count = 0;
+  
+   while(head){
+       sum+=head->data;
+       count++;
+       head = head->next;
+   }
+  
+   if(count==0)return 0;
+   return sum/count;
+}
+
+void printList(node*head){
+   while(head){
+       printf("%c->",head->data);
+       head = head->next;
+   }
+   printf("NULL\n\n");
+}
+
+int main(){
+   node* head = NULL;
+  
+   head = append(head , 'S');
+   head = append(head , 't');
+   head = append(head , 'i');
+   head = append(head , 'n');
+   head = append(head , 'g');
+  
+   printf("List before insertion\n");
+   printList(head);
+      
+   head = insertElem(head , 3 , 'r');
+   printf("List after insertion\n");
+   printList(head);
+   return 0;
+}
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+
+
+#2
+
+
+
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef struct node{
+   int data;
+   struct node*next;
+} node;
+
+node* append(node*head ,int item){
+   node*newNode = (node*)malloc(sizeof(node));
+   newNode->data = item;
+   newNode->next = NULL;
+  
+   if(head==NULL)return newNode;
+  
+   node*current = head;
+   while(current->next!=NULL)current = current->next;
+  
+   current->next = newNode;
+   return head;
+}
+
+void printConvertedList(node*head){
+   printf("Head->");
+   while(head){
+       if(head->data >=1 && head->data<=26)
+           printf("%c",head->data-1 + 'A');
+       else printf("#");
+       printf("->");
+       head = head->next;
+   }
+   printf("NULL\n\n");
+}
+
+int main(){
+   node *List0 = NULL;
+   List0 = append(List0 , 1);
+   List0 = append(List0 , 2);
+   List0 = append(List0 , 2);
+   List0 = append(List0 , 1);
+  
+  
+   node *List1 = NULL;
+   List1 = append(List1 , 12);
+   List1 = append(List1 , 2);
+   List1 = append(List1 , 1);
+  
+   node *List2 = NULL;
+   List2 = append(List2 , 1);
+   List2 = append(List2 , 22);
+   List2 = append(List2 , 1);
+  
+   node *List3 = NULL;
+   List3 = append(List3 , 1);
+   List3 = append(List3 , 2);
+   List3 = append(List3 , 21);
+  
+   printf("List0 : ");
+   printConvertedList(List0);
+  
+   printf("List1 : ");
+   printConvertedList(List1);
+  
+   printf("List2 : ");
+   printConvertedList(List2);
+  
+   printf("List3 : ");
+   printConvertedList(List3);
+  
+   return 0;
+}
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+#5
+
+
+
+
+#include<stdio.h>
+#include<stdbool.h>
+// main function
+int main(){
+   // n-number of values
+   int n,i,j;
+   printf("Enter value N: ");
+   scanf("%d",&n);
+   // array of size nx2
+   int arr[n*2];
+   // array to store checked values
+   int existance[n];
+   int index=0;
+  
+   printf("Enter %d values: ",2*n);
+   // taking user inputs
+   for(i=0;i<(n*2);i++){
+       scanf(" %d",&arr[i]);
+   }
+   printf("\nFollowing Are Sequences\n");
+   i=0;
+   // loop until we get all the values
+   while(index<n){
+       bool exist=false;
+       j=0;
+       // loop to check value is already used or not
+       while(j<index && exist==false){
+           if(existance[j]==arr[i]){
+               // set exist true if already used
+               exist=true;
+               break;
+           }
+           j++;
+       }
+       // if value not used
+       if(exist==false){
+           printf("\n");
+           // insert value to exist array
+           existance[index]=arr[i];
+           index++;
+           // print value
+           printf("%d ",arr[j]);
+           j=i+1;
+           // print value until next occurance
+           while(arr[j]!=arr[i]){
+               printf("%d ",arr[j]);
+               j++;
+           }
+           printf("%d\n",arr[j]);
+       }
+       i++;
+   }
+   return 0;
+}
+
+
+
+
+
+
+
+
+
+
