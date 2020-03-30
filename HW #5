@@ -1,0 +1,209 @@
+#1
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct {
+   int *array;
+   int top;
+}stack;
+
+int pop(stack *s);
+void push(int item, stack *s);
+int peek(stack *s);
+int isEmpty(stack *s);
+void sortStack(stack *s);
+stack* createStack();
+
+#define STACKSIZE 100
+
+int main(void){
+
+   stack *s = createStack();
+   push('s', s);
+   push('o', s);
+   push('r', s);
+   push('t', s);
+
+   sortStack(s);
+
+   return 0;
+}
+
+stack* createStack(){
+   stack *s = (stack *) malloc(sizeof(stack));
+   s->array = (int *) malloc(sizeof(int) * STACKSIZE);
+   s->top = -1;
+   return s;
+}
+
+void push(int item, stack *s){
+   if(s->top == STACKSIZE - 1) return;
+   s -> array[++s->top] = item;
+}
+
+int pop(stack *s){
+   if(s->top == -1) return -1;
+   return s->array[s->top--];
+}
+
+int peek(stack *s){
+   if(s->top == -1) return -1;
+   return s->array[s->top];
+}
+
+int isEmpty(stack *s){
+   return s->top == -1;
+}
+
+void sortStack(stack *s){
+   stack *temp = createStack();
+
+   while(!isEmpty(s)){
+       int popVal = pop(s);
+      
+       while(!isEmpty(temp) && peek(temp) > popVal)
+           push(pop(temp), s);
+
+       push(popVal, temp);
+   }
+
+   while(!isEmpty(temp)){
+       int popVal= pop(temp);
+       printf("%c ",popVal);
+       push(popVal, s);
+   }
+}
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+#4
+
+
+
+// disable warning in visual studio
+
+
+
+
+
+
+
+#include <stdio.h>
+#pragma warning(disable : 4996) // disable warning in visual studio
+#define MAX_SIZE 100 // maximum size of array
+
+// function prototype
+char* simplify(char[]);
+
+int main() {
+   // take a string as input expression
+   printf("Enter a expression: ");
+   char* line = (char*)malloc(sizeof(char) * MAX_SIZE);
+   scanf("%s", line);
+   // pass input expression to function
+   char* simplified = simplify(line);
+   // print result
+   printf("\nResult: ");
+   printf(simplified);
+   printf("\n");
+  
+   return 0;
+}
+
+// function definition
+char* simplify(char line[]) {
+   // create array to represent stack
+   char* signs = (char*)malloc(sizeof(char) * MAX_SIZE);
+   char* letters = (char*)malloc(sizeof(char) * MAX_SIZE);
+   // create stack pointers
+   int sign_top = -1;
+   int letter_top = -1;
+  
+   // read each character from given line and put it into stacks
+   int i = 0;
+   while (1) {
+       if (line[i] == '\0') { // end of line
+           break;
+       }
+       else if (line[i] == '-' || line[i] == '+' || line[i] == '(') {
+           // put operator to stack
+           sign_top++;
+           signs[sign_top] = line[i];
+       }
+       else if (line[i] == ')') {
+           // perfrom sign calculation
+           // create a new stack for internal signs
+           char* intrnl = (char*)malloc(sizeof(char) * MAX_SIZE);
+           int intrnl_top = 0;
+           // pop each sign from sign stack till a opening paranthesis is found
+           while (signs[sign_top] != '(') {
+               // put each sign in internal stack
+               intrnl[intrnl_top] = signs[sign_top];
+               intrnl_top++;
+               sign_top--;
+           }
+           // remove opening paranthesis from stack
+           sign_top--;
+           // check for new sign in signs
+           if (sign_top >= 0) {
+               // if new sign is negative flip all signs in internal stack
+               if (signs[sign_top] == '-') {
+                   for (int j = 0; j < intrnl_top; j++) {
+                       if (intrnl[j] == '-') {
+                           intrnl[j] = '+';
+                       }
+                       else {
+                           intrnl[j] = '-';
+                       }
+                   }
+               }
+           }
+           // after computing signs add all signs back to sign stack
+           for (int j = 0; j < intrnl_top; j++) {
+               sign_top++;
+               signs[sign_top] = intrnl[j];
+           }
+       }
+       else {
+           // add char to stack
+           letter_top++;
+           letters[letter_top] = line[i];
+       }
+       i++;
+   }//end of line
+   // construct a char array to return result
+   char* result = (char*)malloc(sizeof(char) * MAX_SIZE);
+   int index = 0;
+   for (int i = 0; i < letter_top; i++) {
+       // first add variable letter
+       result[index] = letters[i];
+
+       index++;
+       // than add its sign
+       result[index] = signs[i];
+       index++;
+   }
+   // add last letter
+   result[index] = letters[letter_top];
+   index++;
+   // add null character
+   result[index] = '\0';
+
+   return result;
+}
+
+
+
+
+
+
+
+
