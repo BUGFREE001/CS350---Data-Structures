@@ -267,6 +267,176 @@ return 0;
 
 
 
+#3
+
+
+
+
+#include <stdio.h>
+#include<stdlib.h>
+
+//a node in priority queue
+
+struct priority_queue_node{
+char data;
+struct priority_queue_node *next;
+struct priority_queue_node *previous;
+};
+
+//function returns ptr to a node
+
+struct priority_queue_node *PQnode(char c){
+struct priority_queue_node* pq=malloc(sizeof(struct priority_queue_node));
+pq->data=c;
+pq->next=NULL;
+pq->previous=NULL;
+
+return pq;
+}
+
+//priority queue
+
+struct priority_queue{
+struct priority_queue_node *front;
+struct priority_queue_node *rear;
+};
+
+//creates and returns a prioroty queue
+
+struct priority_queue PriorityQueue(){
+struct priority_queue pq;
+pq.front=NULL;
+pq.rear=NULL;
+
+return pq;
+}
+
+//implementing push function
+
+void push(struct priority_queue *pq,char c){
+struct priority_queue_node* node=PQnode(c);
+if(pq->front==NULL&&pq->rear==NULL){
+pq->front=node;
+pq->rear=node;
+
+}
+
+else{
+pq->rear->next=node;
+node->previous=pq->rear;
+pq->rear=pq->rear->next;
+}
+}
+
+//implementing pop function
+
+//returns popped value
+
+char pop(struct priority_queue *pq){
+if(!pq->front&&!pq->rear){
+printf("Underflow\n");
+
+return -1;
+
+}
+
+struct priority_queue_node *tmp=pq->front;
+struct priority_queue_node *max=pq->front;
+while(tmp!=NULL){
+if(tmp->data>max->data)
+max=tmp;
+tmp=tmp->next;
+
+}
+
+char ch=max->data;
+if(max==pq->front){
+pq->front=max->next;
+if(pq->front)
+pq->front->previous=NULL;
+
+else
+pq->rear=NULL;
+return ch;
+}
+
+if(max==pq->rear){
+pq->rear=max->previous;
+if(pq->rear)
+pq->rear->next=NULL;
+
+else
+pq->front==NULL;
+return ch;
+}
+
+if(max!=pq->front&&max!=pq->rear){
+max->previous->next=max->next;
+max->next->previous=max->previous;
+}
+
+free(max);
+return ch;
+
+}
+
+//prints the priority queue
+
+void print(struct priority_queue pq){
+struct priority_queue_node* tmp=pq.front;
+while(tmp){
+printf(" ___ ");
+tmp=tmp->next;
+}
+printf("\n");
+tmp=pq.front;
+while(tmp){
+printf("| %c |",tmp->data);
+tmp=tmp->next;
+}
+printf("\n");
+tmp=pq.front;
+while(tmp){
+printf("|___|");
+tmp=tmp->next;
+}
+printf("\n");
+}
+
+//testing in main
+
+int main(void) {
+struct priority_queue pq=PriorityQueue();
+push(&pq,'C');
+push(&pq,'O');
+push(&pq,'D');
+push(&pq,'A');
+print(pq);
+printf("%c popped\n",pop(&pq));
+print(pq);
+push(&pq,'B');
+print(pq);
+printf("%c popped\n",pop(&pq));
+print(pq);
+printf("%c popped\n",pop(&pq));
+print(pq);
+printf("%c popped\n",pop(&pq));
+print(pq);
+printf("%c popped\n",pop(&pq));
+print(pq);
+
+return 0;
+}
+
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
 #4
 
 
