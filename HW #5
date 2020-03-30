@@ -83,14 +83,106 @@ void sortStack(stack *s){
 
 
 
+#3
+
+
+
+
+
+#include <stdio.h>
+
+//Define stack array and top.
+int stck[10];
+int top=-1;
+
+//define a temporary stack.
+int tempStck[10];
+//To be set as top to store original value of top
+int tempTop;
+//push program for stack.
+void push(int val){
+if(top>=9){
+printf("Stack is FULL!\n");
+}
+else{
+top++;
+stck[top]=val;
+}
+}
+//pop program for stack.
+void pop(){
+if(top<=-1){
+printf("Stack is empty!\n");
+}
+else{
+// printf("Popped Element is %d\n",stck[top]);
+top--;
+}
+}
+//Main method for checking ordering
+void traverse(){
+//Save the value of current top.
+tempTop=top;
+//If there are odd elements, pop the first element. Here numbering is from index 0.
+if(top%2==0){
+pop();
+}
+//Assing tempStck as stck.
+for(int i=0;i<10;i++){
+tempStck[i]=stck[i];
+}
+//tempEle stores current comparitive element. count has number of pairs.
+int tempEle,count=0;
+//Now, start popping out the values from tempStck.
+while(top!=-1){
+tempEle=tempStck[top];
+pop();
+//Now, we compare consecutiveness.
+if(tempStck[top]==tempEle+1||tempStck[top]==tempEle-1){
+printf("(%d %d)\t",tempEle,tempStck[top]);
+count++;
+}
+//We pop again so this element is not counted.
+pop();
+}
+printf("\n");
+//Now, we check if all elements were pairs.
+if(tempTop==count*2 || tempTop==count*2 - 1){
+printf("Yes\n");
+}
+else{
+printf("No\n");
+}
+  
+}
+int main()
+{
+push(4);
+push(5);
+push(-2);
+push(-3);
+push(11);
+push(10);
+push(5);
+push(6);
+push(20);
+  
+traverse();
+return 0;
+}
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+
 
 #4
 
 
 
 // disable warning in visual studio
-
-
 
 
 
@@ -197,7 +289,9 @@ char* simplify(char line[]) {
    // add null character
    result[index] = '\0';
 
+
    return result;
+   
 }
 
 
