@@ -1,0 +1,376 @@
+#1
+
+
+
+
+#include <stdio.h>
+#include <string.h>
+// defining global max value as 20
+#define MAX 25
+// Declaring queue for strings
+char queue[MAX][MAX];
+//Declaring a temporary string
+char temp[MAX];
+//declaring variables for queue operations
+int front = -1, rear = -1;
+// Definition of enqueue function
+void enqueue(char* ptr) {
+   // if no elements are there in queue..
+   if (front == -1 && rear == -1)
+       // ..then make front and rear as 0
+       front = rear = 0;
+   // if queue is not empty then ..
+   else
+       // ..increment queue by 1 to store another element
+       rear = rear + 1;
+   // enque given element at rear position
+   strcpy(queue[rear], ptr);
+}
+char* dequeue() {
+   // we deque an element from queue
+   // so we remove first(front) element, store front element in temp
+   strcpy(temp, queue[front]);
+   // if no elements are there in queue..
+   if (front == rear)
+       // then make front and rear as -1
+       front = rear = -1;
+   //if elements present
+   else
+       // we remove front element
+       // so make next element as front
+       front = front + 1;
+   // returning front element
+   return temp;
+}
+// Definition for genBin function to generate binary numbers
+void genBin(unsigned int n) {
+   char str1[MAX],str2[MAX];
+   //Initially we enqueue 1 to queue
+   enqueue("1");
+   // loop for iterating through all numbers upto n
+   for(unsigned int i=0;i<n;i++){
+       // first deque an element from queue
+       // store it in a string
+       strcpy(str1,dequeue());
+       // print that element
+       printf("%s ,", str1);
+       // now copy this string to anohter string
+       strcpy(str2,str1);
+       // concat 0 to the string1
+       strcat(str1,"0");
+       // concat 1 to the string2
+       strcat(str2,"1");
+       // Add both string to the queue
+       enqueue(str1);
+       enqueue(str2);
+}
+}
+int main() {
+unsigned int n;
+// prompt user for input a number
+printf("Enter the value : ");
+scanf("%u", &n);
+//Call the function genBin to generate nbinary numbers
+genBin(n);
+return 0;
+}
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+
+
+#2
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// We have defined structure in which we have defined the following
+//Variable rear will store the last element,
+// Variablefront will store the first element of the queue
+//Count will denote the size of the queue
+//MAX is used for initialization
+
+#define QUEUE_EMPTY_MAGIC 0xdeadbeef
+typedef struct _queue_t
+{
+int *arr;
+int rear, front, count, max;
+} queue_t;
+
+//Prototypes for the functions that are used in the program
+
+queue_t *queue_allocate (int n);
+void queue_insert (queue_t * q, int v);
+int queue_remove (queue_t * q);
+int queue_count (queue_t * q);
+int queue_is_empty (queue_t * q);
+
+//In this function we will be passing the queue object
+//And we will be operating the queue opeartions on the passed queue object
+
+//Code for Stack PUSH operation
+void stack_push (queue_t * q, int v)
+{
+queue_insert (q, v);
+}
+
+//Code for Stack POP operation
+int stack_pop (queue_t * q)
+{
+int i, n = queue_count (q);
+int removed_element;
+
+for (i = 0; i < (n - 1); i++)
+{
+removed_element = queue_remove (q);
+queue_insert (q, removed_element);
+}
+removed_element = queue_remove (q);
+return removed_element;
+}
+
+//This function will check whether the stack is empty or not
+int stack_is_empty (queue_t * q)
+{
+return queue_is_empty (q);
+}
+
+//This function will return the maximum size of the queue
+int stack_count (queue_t * q)
+{
+return queue_count (q);
+}
+
+//Code foe queue operations
+int queue_count (queue_t * q)
+{
+return q->count;
+}
+
+queue_t *
+queue_allocate (int n)
+{
+queue_t *queue;
+
+queue = malloc (sizeof (queue_t));
+if (queue == NULL)
+return NULL;
+queue->max = n;
+
+queue->arr = malloc (sizeof (int) * n);
+queue->rear = n - 1;
+queue->front = n - 1;
+  
+return queue;
+}
+
+void queue_insert (queue_t * q, int v)
+{
+if (q->count == q->max)
+return;
+q->rear = (q->rear + 1) % q->max;
+q->arr[q->rear] = v;
+q->count++;
+}
+
+int queue_remove (queue_t * q)
+{
+int retval;
+if (q->count == 0)
+return QUEUE_EMPTY_MAGIC;
+  
+q->front = (q->front + 1) % q->max;
+retval = q->arr[q->front];
+q->count--;
+return retval;
+}
+
+//This function will check whether the queue is empty or not
+int queue_is_empty (queue_t * q)
+{
+return (q->count == 0);
+}
+
+//To demonstrate the operations of queue and stack queue_display function is included in the program
+void queue_display (queue_t * q)
+{
+int i = (q->front + 1) % q->max, elements = queue_count (q);
+while (elements--)
+{
+printf ("%d ", q->arr[i]);
+i = (i >= q->max) ? 0 : (i + 1);
+}
+}
+
+//Main method
+#define MAX 128
+int main (void)
+{
+queue_t *q;
+int x, select;
+//Here we are allocating static memory
+q = queue_allocate (MAX);
+
+do
+{
+printf ("\n1. Push\n2. Pop\n3. Exit");
+printf ("\nChoice: ");
+scanf (" %d", &select);
+
+switch (select)
+{
+case 1:
+printf ("Enter value to Push:");
+scanf (" %d", &x);
+//PUSH operation called
+stack_push (q, x);
+printf ("__________________________\nCurrent Queue:\n");
+//It will print the value which is getting pushed to the queue
+queue_display (q);
+printf ("\nPushed Value: %d", x);
+printf ("\n__________________________\n");
+break;
+
+case 2:
+//POP operation called
+x = stack_pop (q);
+printf ("__________________________\nCurrent Queue:\n");
+//It will print the value which is getting popped from the queue
+queue_display (q);
+if (x == QUEUE_EMPTY_MAGIC)
+printf ("No values removed");
+else
+printf ("\nPopped Value: %d", x);
+printf ("\n__________________________\n");
+break;
+  
+case 3: default:
+//Program will exit if you press any other key except 1 or 2
+printf ("\nInvalid choice.\n");
+return 0;
+}
+}
+while (1);
+return 0;
+}
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+#4
+
+
+
+
+#include <stdio.h>
+#include<stdlib.h>
+
+int cq[100];
+
+void add(int MAXSIZE, int* front, int* rear, int item);
+void del(int MAXSIZE, int* front, int* rear);
+void display(int MAXSIZE, int front, int rear);
+
+/*************  Function **************/
+
+int getNumElem(int MAXSIZE, int front, int rear);
+
+/*************  Function **************/
+
+int main() {
+const int MAXSIZE = 10;
+int front = -1, rear = -1;
+int ch, i, num;
+printf("\nCircular Queue implementation");
+printf("\n\nMAIN MENU\n 1.INSERTION\n 2.DELETION\n 3.DISPLAY\n 4.GET NUM ELEMENTS\n 5.EXIT");
+
+while (1) {
+    printf("\n ENTER YOUR CHOICE OF OPERATION: ");
+    scanf("%d", & ch);
+    
+    switch (ch) {
+
+    case 1:
+      printf("\n\tENTER THE QUEUE ELEMENT TO INSERT:");
+      scanf("%d", & num); /*read element to be inserted*/
+      add(MAXSIZE, &front, &rear, num); /*call function add*/
+      break;
+
+    case 2:
+      del(MAXSIZE, &front, &rear); /*call function del*/
+      break;
+
+    case 3:
+      display(MAXSIZE, front, rear); /*call function display*/
+      break;
+
+    case 4:
+      num = getNumElem(MAXSIZE, front, rear);
+      printf("\n\tNUMBER OF ELEMENTS = %d\n", num);
+      break;
+
+    case 5:
+      exit(0);
+      
+    default:
+      printf("\nInvalid Choice . ");
+    }
+}
+}
+
+/*function to add an element into queue*/
+
+void add(int MAXSIZE, int *front, int *rear, int item) {
+
+if (*front == (*rear + 1) % MAXSIZE) /*Queue is full*/ {
+    printf("\n\tCIRCULAR QUEUE IS FULL");
+} else {
+    if (*front == -1) /*Queue empty*/
+      *front = *rear = 0; /*increase front and rear by 1*/
+    else
+      *rear = (*rear + 1) % MAXSIZE; /*move rear one place to the right*/
+    cq[*rear] = item; /*insert element at rear*/
+}
+}
+
+/*function to delete an element from the queue*/
+
+void del(int MAXSIZE, int *front, int *rear) {
+int a;
+if (*front == -1) /*Queue empty*/
+    printf("\n\tCIRCULAR QUEUE IS EMPLTY");
+else {
+    a = cq[*front]; /*dequeue element from front and assign it to a*/
+    cq[*front] = 0; /*assign 0 at front*/
+    if (*front == *rear) /*only one element in queue*/
+      *front = *rear = -1; /*move front one place to its left*/
+    else
+      *front = (*front + 1) % MAXSIZE; /*move front one place to its right*/
+    printf("\n\tELEMENT REMOVED FROM QUEUE IS : %d ", a); /*print deleted element*/
+}
+}
+
+void display(int MAXSIZE, int front, int rear) /* function to display the queue elements*/ {
+int i;
+printf ("\t");
+for (i = front; i <= rear; i = (i+1) % MAXSIZE) /*traverse queue elements from front to rear*/
+    printf("%d\t", cq[i]); /*print elements of queue*/
+  printf("\n");
+}
+
+/************* Function **************/
+
+int getNumElem(int MAXSIZE, int front, int rear){
+return (rear - front + 1) % MAXSIZE;
+
+}
