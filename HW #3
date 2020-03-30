@@ -1,0 +1,303 @@
+#1
+
+
+
+#include<stdio.h>
+#include<stdlib.h> 
+//defining struct for a nest, the node of our circular linked list
+struct nest{
+    int label;
+    int checked;
+    struct nest* next;
+};typedef struct nest nest;
+//returns pointer to an instance of nest
+nest* Nest(int label){
+    struct nest* n=malloc(sizeof(nest));
+    n->label=label;
+    n->checked=0;
+    n->next=NULL;
+    return n;
+}
+//defining circular linked list data structure
+struct circular_linked_list{
+    struct nest* head;//head of the circular linked list
+    int wolf_skip;//keeps track of how many nests wolf has to skip
+    int size;//no. of nests in circular linked list
+    struct nest* wolf_at_nest;
+};typedef struct circular_linked_list circular_linked_list;
+//returns pointer to an instance of circular linked list of size no. of nests
+circular_linked_list *CLL(int size){
+        struct circular_linked_list* cll=malloc(sizeof(circular_linked_list));
+        cll->size=size;
+        cll->wolf_skip=0;
+        if(size==0)
+            cll->head=NULL;
+        else{
+            cll->head=Nest(1);
+            struct nest *temp=cll->head;
+            int label=1;
+            while(++label<=size){
+                temp->next=Nest(label);
+                temp=temp->next;
+            }
+            temp->next=cll->head;
+    }
+    return cll;
+} 
+//function to mark a nest checked by wolf
+void wolf_checks(circular_linked_list* cll){
+    if(cll->wolf_skip==0){
+        cll->wolf_at_nest=cll->head;
+    }
+    else{
+        int i;
+        for(i=0;i<cll->wolf_skip;i++)
+            cll->wolf_at_nest=cll->wolf_at_nest->next;
+        cll->wolf_at_nest=cll->wolf_at_nest->next;
+    }
+    cll->wolf_skip+=1;
+    cll->wolf_at_nest->checked=1;
+}
+//prints the safety status of all nests
+void check_safe_nests(circular_linked_list* cll){
+    struct nest *temp = cll->head;
+    while(cll->size--){
+        if(temp->checked==0)
+            printf("Nest %2d  safe     !\n",temp->label);
+        else
+            printf("Nest %2d  not safe !\n",temp->label);
+        temp=temp->next;
+    }
+}
+
+int main(){ 
+    //creating a circular linked list of 10 nests
+    struct circular_linked_list* nests=CLL(10); 
+    //inputting no. of times wolf checks
+    printf("Enter the number of times a wolf checks the nests: ");
+    int n;
+    scanf("%d",&n); 
+    //making the wolf check n times
+    while(n--)
+        wolf_checks(nests); 
+    //traversing and printing safety status of all nests
+    check_safe_nests(nests);
+}
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+
+
+#3
+
+
+
+#include <stdio.h>
+#include<stdlib.h>
+#include<stdbool.h>
+struct node
+{
+int data;
+struct node *next;
+};
+
+void add_node( struct node **head,int value)
+{
+struct node *temp=(struct node*) malloc(sizeof(struct node));
+temp->data=value;
+temp->next=*head;
+if((*head)==NULL)
+{
+temp->next=temp;
+(*head)=temp;
+}
+else
+{
+struct node *t2=(*head);
+while(t2->next != (*head))
+{
+t2=t2->next;
+}
+t2->next=temp;
+(*head)=temp;
+}
+}
+
+bool check_prime(int value)
+{
+for(int i=2;i<value;i++)
+{
+if(value%i==0) return false;
+}
+return true;
+}
+
+void delete_prime_CLL(struct node **head)
+{
+struct node *temp=(*head);
+struct node *temp2=(*head);
+struct node * prev=NULL;
+if(* head==NULL) return;
+do
+{
+if (check_prime(temp->data))
+{
+if(prev==NULL)
+{
+while(temp2->next!=(*head))
+{
+temp2=temp2->next;
+}
+temp2->next=temp->next;
+(*head)=temp->next;
+delete_prime_CLL(head);
+return;
+}
+else
+{
+prev->next=temp->next;
+}
+}
+prev=temp;
+temp=temp->next;
+} while(temp!=(*head));
+}
+
+void print(struct node *head)
+{
+struct node *temp=head;
+if(head==NULL) return;
+printf("head-> ");
+do
+{
+printf("%d ->",temp->data);
+temp=temp->next;
+} while(temp!=head);
+printf("head");
+printf("\n");
+}
+int main()
+{
+struct node *head=(struct node*) malloc(sizeof(struct node));
+head=NULL;
+add_node(&head,14);
+add_node(&head,15);
+add_node(&head,12);
+add_node(&head,13);
+add_node(&head,5);
+print(head);
+delete_prime_CLL(&head);
+print(head);
+return 0;
+}
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+#4
+
+
+
+#include<stdio.h>
+#include<stdlib.h>
+
+struct Node
+{
+int data;
+struct Node *next;
+};
+void splitList(struct Node *head, struct Node **head1_ref,struct Node **head2_ref)
+{
+struct Node *slow_ptr = head;
+struct Node *fast_ptr = head;
+  
+if(head == NULL)
+return;
+
+while(fast_ptr->next != head &&
+fast_ptr->next->next != head)
+{
+fast_ptr = fast_ptr->next->next;
+slow_ptr = slow_ptr->next;
+}   
+  
+if(fast_ptr->next->next == head)
+fast_ptr = fast_ptr->next;   
+  
+*head1_ref = head;   
+
+if(head->next != head)
+*head2_ref = slow_ptr->next;
+  
+  
+fast_ptr->next = slow_ptr->next;
+  
+  
+slow_ptr->next = head;
+}
+  
+void push(struct Node **head_ref, int data)
+{
+struct Node *ptr1 = (struct Node *)malloc(sizeof(struct Node));
+struct Node *temp = *head_ref;
+ptr1->data = data;   
+ptr1->next = *head_ref;
+  
+if(*head_ref != NULL)
+{
+while(temp->next != *head_ref)
+temp = temp->next;   
+temp->next = ptr1;
+}
+else
+ptr1->next = ptr1;
+*head_ref = ptr1;
+}
+  
+void printList(struct Node *head)
+{
+struct Node *temp = head;
+if(head != NULL)
+{
+printf("\n");
+do {
+printf("%d ", temp->data);
+temp = temp->next;
+} while(temp != head);
+}
+}
+  
+int main()
+{
+int list_size, i;
+  
+struct Node *head = NULL;
+struct Node *head1 = NULL;
+struct Node *head2 = NULL;   
+push(&head, 12);
+push(&head, 56);
+push(&head, 2);
+push(&head, 11);
+  
+printf("Original Circular Linked List");
+printList(head);   
+
+splitList(head, &head1, &head2);
+
+printf("\nFirst Circular Linked List");
+printList(head1);   
+  
+printf("\nSecond Circular Linked List");
+printList(head2);   
+  
+getchar();
+return 0;
+}
