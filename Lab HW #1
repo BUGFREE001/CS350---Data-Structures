@@ -1,0 +1,181 @@
+#3
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <malloc.h>
+
+struct node {
+    int data;
+    struct node *next;
+};
+struct node1 {
+    char data;
+    struct node1 *next;
+};
+
+struct node *head = NULL;
+struct node *current = NULL;
+struct node1 *head1 = NULL;
+struct node1 *current1 = NULL;
+//display the list
+void printList() {
+    
+    struct node *ptr = head;
+    
+    printf("\n[head] =>");
+    //start from the beginning
+    while(ptr != NULL) {
+        printf(" %d =>",ptr->data);
+        ptr = ptr->next;
+    }
+    
+    printf(" [null]\n");
+}
+void printList1() {
+    
+    struct node1 *ptr = head1;
+    
+    printf("\n[head1] =>");
+    // start from the beginning
+    while(ptr != NULL) {
+        printf(" %c =>",ptr->data);
+        ptr = ptr->next;
+    }
+    
+    printf(" [null]\n");
+}
+int max_int_list(struct node *head){
+    struct node *ptr = head;
+    int temp = ptr->data;
+    ptr=ptr->next;
+    while(ptr!=NULL)
+    {
+        if(ptr->data>temp)
+        {
+            temp = ptr->data;
+        }
+        ptr=ptr->next;
+    }
+    return temp;
+}
+int max_char_list(struct node1 *head1){
+    struct node1 *ptr=head1;
+    char temp = ptr->data;
+    ptr=ptr->next;
+    while(ptr!=NULL){
+        if(ptr->data>temp){
+            temp=ptr->data;
+        }
+        ptr=ptr->next;
+    }
+    return temp;
+}
+
+int min_int_list(struct node *head){
+    struct node *ptr=head;
+    int temp=ptr->data;
+    ptr=ptr->next;
+    while(ptr!=NULL){
+        if (ptr->data<temp){
+            temp=ptr->data;
+        }
+        ptr=ptr->next;
+    }
+    return temp;
+}
+
+int min_char_list(struct node1 *head1){
+    struct node1 *ptr=head1;
+    char temp=ptr->data;
+    ptr=ptr->next;
+    while(ptr!=NULL){
+        if(ptr->data<temp){
+            temp = ptr->data;
+        }
+        ptr=ptr->next;
+    }
+    return temp;
+}
+
+//insert link at the first location
+void insert(int data) {
+    //creat a link
+    struct node *link = (struct node*) malloc(sizeof(struct node));
+    //link->key = key;
+    link->data=data;
+    
+    //point it to the old first node
+    link->next = head;
+    
+    //point first to new first node
+    head = link;
+}
+
+void insert1(char data) {
+    //create a link
+    struct node1 *link = (struct node1*) malloc(sizeof(struct node1));
+    
+    //link->key =key;
+    link->data = data;
+    
+    //point it to the old first node
+    link->next=head1;
+    
+    //point first to the new first node
+    head1=link;
+    
+}
+
+int main(){
+    int n;
+    printf("Please enter the no. of node ");
+    scanf("%d",&n);
+    int flag;
+    printf("Enter 1 for int list and 0 for char list ");
+    scanf("%d",&flag);
+    if (flag==1){
+        int i=0;
+        while(n>i){
+            int temp;
+            printf("Enter %d element= ", i+1 );
+            scanf("%d",&temp);
+            insert(temp);
+            i=i+1;
+        }
+        printList();
+        printf("The max element is %d\n", max_int_list(head));
+        printf("The min element is %d\n", min_int_list(head));
+    }
+    else{
+        int j=0;
+        while(n>j){
+            char temp1;
+            printf("Enter %d element \n", j+1);
+            getchar();
+            temp1=getchar();
+            insert1(temp1);
+            j=j+1;
+        }
+        
+        
+        printList();
+        printf("The max element is %c\n", max_char_list(head1));
+        printf("The min element is %c\n", min_char_list(head1));
+    }
+    return 0;
+    
+    
+}
+
+
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------
+
+
+
+#
+
