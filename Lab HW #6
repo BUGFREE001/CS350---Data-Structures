@@ -1,0 +1,238 @@
+#2
+
+
+
+#include<stdio.h>
+#include<string.h>
+#define MAX 100
+
+int top=-1;
+char stack[MAX];
+void push(char a);
+char pop();
+char* rev(char a[]);
+
+//Main Function Takes Input From User and Gives Output
+int main()
+{
+   char a[MAX];
+   printf("Enter string : ");
+   gets(a);   //Taking Input From User
+   //Printing Output
+   if(strlen(a)>0)
+       printf("Reverse String : %s",rev(a));
+   else
+   {
+       printf("Enter Valid String");
+       return 0;
+   }
+}
+//Push Operation Of Stack
+void push(char a)
+{
+   if(top==MAX-1)
+       printf("Stack Overflow");
+   else
+       stack[++top]=a;  
+}
+//Pop Operation Of Stack
+char pop()
+{
+   if(top == -1)
+       printf("\n Stack Underflow");
+   else
+       return stack[top--];
+}
+//Reverse Function Takes Character array and returns reverse string by using stack operations
+char* rev(char a[])
+{
+   int i;
+   for(i=0;a[i]!='\0';i++)
+       push(a[i]);       //Calling push()
+   for(i=0;a[i]!='\0';i++)
+       a[i]=pop();       //Calling pop()
+   return a;
+}
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+#3
+
+
+
+#include<stdio.h>
+
+//function prototype
+void rev(int queue[], int n);
+void print(int q[], int size);
+
+//function implementation
+void rev(int queue[], int n)
+{
+   int i = 0;
+   int j = n - 1;
+   while (i < j)
+   {
+       int temp =queue[i];
+       queue[i] = queue[j];
+       queue[j] = temp;
+       i++;
+       j--;
+   }
+}
+//print the queue
+
+void print(int q[], int size)
+{
+   for (int i = 0; i < size; i++)
+   {
+       printf("%d ", q[i]);
+   }
+   printf("\n");
+}
+int main()
+{
+   int q[] = { 1,2,3,4,5,6,7,8,9,10 };
+   //call to print function
+   printf("Original queue:\n");
+   print(q, 10);
+   int n = 5;
+   //call reverse function
+   rev(q, n);
+   printf("After reverse from 0 to %d\n", n);
+   //call print
+   print(q, 10);
+
+   return 0;
+}
+
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+#4
+
+
+
+
+#include<stdio.h>
+
+const int size=6;
+char queue[6];
+int front,rear;
+void enqueue(char x)
+{
+if((rear-front+1+size)%size==0)
+{
+//queue is full
+return;
+}
+else
+{
+rear=(rear+1)%size;
+queue[rear]=x;
+if(front==-1)
+front=rear;
+}
+}
+void dequeue(char x)
+{
+if(front==-1)
+{
+//queue is empty
+return;
+}
+else
+{
+if(front==rear)
+{
+//queue has one element
+if(queue[front]==x)
+{
+//element to be delete exist in queue
+front=rear=-1;
+}
+else
+{
+//element not found in queue
+return;
+}
+}
+else
+{
+while((front!=rear)&&(queue[front]!=x))
+front=(front+1)%size;
+if(front==rear)
+{
+if(queue[front]==x)
+{
+front=rear=-1;
+}
+else
+{
+//element not found
+return;
+}
+}
+else
+{
+if(queue[front]==x)
+{
+front=(front+1)%size;
+}
+else
+{
+return;
+}
+}
+}
+}
+}
+int main()
+{
+front=-1;
+rear=-1;
+/***a***/
+enqueue('d');
+enqueue('e');
+enqueue('b');
+enqueue('g');
+enqueue('h');
+/***b***/
+dequeue('d');
+dequeue('e');
+/***c***/
+enqueue('i');
+enqueue('j');
+enqueue('k');
+enqueue('l');
+enqueue('m');
+/***d***/
+dequeue('b');
+/***e***/
+enqueue('n');
+enqueue('o');
+enqueue('p');
+enqueue('q');
+enqueue('r');
+printf("front=%d \nrear=%d\n",front,rear);
+}
+
+
+
+
+
+
+
+
