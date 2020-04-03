@@ -1,0 +1,264 @@
+#1
+
+
+#2
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+struct node
+{
+struct node * prev;
+int data;
+struct node * next;
+};
+
+void dul_LL_delete_index(struct node *ls,int n)
+{
+if (ls)
+{
+for(int i=0;i<n-2;i++)
+{
+ls=ls->next;
+}
+ls->next=ls->next->next;
+ls->next->prev=ls;
+}
+  
+else
+{
+printf("list is empty");
+}
+}
+int main()
+{
+  
+   struct node *head,*second,*third,*fourth,*temp;
+   head= (struct node *)malloc(sizeof(struct node));
+   second= (struct node *)malloc(sizeof(struct node));
+   third= (struct node *)malloc(sizeof(struct node));
+   fourth= (struct node *)malloc(sizeof(struct node));
+
+// first node
+   head->prev=NULL;
+   head->data=11;
+  
+// second node
+
+head->next=second;
+second->prev=head;
+second->data=9;
+  
+// third node
+
+second->next=third;
+third->prev=second;
+third->data=13;
+
+// fourth node
+
+third->next=fourth;
+fourth->prev=third;
+fourth->data=8;
+fourth->next=NULL;
+
+  
+   printf("Before deletion\n");
+   temp=head;
+   while(temp!=NULL)
+   {
+   printf("%d ",temp->data);
+   temp=temp->next;
+   }
+  
+dul_LL_delete_index(head,3);
+printf("\n");
+
+printf("After deletion\n");
+    temp=head;
+   while(temp!=NULL)
+   {
+   printf("%d ",temp->data);
+   temp=temp->next;
+   }
+  
+   return 0;
+}
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+
+
+#3
+
+
+
+
+Note: Do NOT use online complier when you run the code, to avoid warnings, please use other complier
+
+
+
+
+#include <stdio.h>     
+
+struct node{
+        int data;
+        struct node *previous;
+        struct node *next;
+};      
+struct node *head, *tail = NULL;  
+    void addNode(int data) {
+        struct node *newNode = (struct node*)malloc(sizeof(struct node));
+        newNode->data = data;
+        if(head == NULL) {  
+            head = tail = newNode;
+            head->previous = NULL;
+            tail->next = NULL;
+        }
+        else {  
+            tail->next = newNode;
+            newNode->previous = tail;
+            tail = newNode;
+            tail->next = NULL;
+        }
+    }
+void sortList() {
+        struct node *current = NULL, *index = NULL;
+        int temp;
+        if(head == NULL) {
+            return;
+        }
+        else {
+            for(current = head; current->next != NULL; current = current->next) {
+                for(index = current->next; index != NULL; index = index->next) {
+                    if(current->data > index->data) {
+                        temp = current->data;
+                        current->data = index->data;
+                        index->data = temp;
+                    }
+                }
+            }
+        }
+    }
+void display() {
+        struct node *current = head;
+        if(head == NULL) {
+            printf("List is empty\n");
+            return;
+        }
+        printf("NULL<-Head");
+        while(current != NULL) {
+            printf("<=>%d",current->data);
+            current = current->next;
+        }
+       printf("->NULL\n");
+    }
+int   srt_dul_LL(lst){
+       char *string = lst, *ptr = string;
+        while (*ptr) {
+            if (isdigit(*ptr)) {
+                long val = strtol(ptr, &ptr, 10);
+                addNode(val);
+            } else {
+                ptr++;
+            }
+        }
+        return 0;
+   }
+     
+int main()
+    {
+       char string[20];
+        printf("Enter LIST: ");
+        scanf("%s", string);
+        srt_dul_LL(string);
+        printf("Original list: \n");
+        display();
+        sortList();
+        printf("Sorted list: \n");
+        display();
+        return 0;
+    }
+    
+    
+    
+    
+-----------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+#4
+
+
+
+#include <stdio.h>
+
+struct Node { //Creating a structure for node
+char data;
+struct node *previous;
+struct node *next;
+} *head,*last;
+
+
+void push(struct Node** head, char data1)
+{
+struct Node* new1 = (struct Node*)malloc(sizeof(struct Node));
+new1->data = data1;
+new1->next = (*head);
+new1->previous = NULL;
+if ((*head) != NULL)
+(*head)->previous = new1;
+(*head) = new1;
+}
+
+
+void rev_dul_LL(struct Node **head)
+{
+struct Node *any = NULL;
+struct Node *curr = *head;
+while (curr != NULL) {
+any = curr->previous;
+curr->previous = curr->next;
+curr->next = any;
+curr = curr->previous; }
+if(any != NULL )
+*head = any->previous;
+}
+
+
+void print_doubly_LL(struct Node *node)
+{
+while(node != NULL){
+printf("%c ", node->data);
+node = node->next; }
+}
+
+
+
+int main(void) {
+struct Node* head = NULL;
+push(&head, 'R');
+push(&head, 'a');
+push(&head, 'd');
+push(&head, 'A');
+push(&head, 'r');
+print_doubly_LL(head);
+rev_dul_LL(&head);
+
+printf("\nReversed Doubly Linked list will be:\n");
+
+print_doubly_LL(head);
+
+
+return 0;
+
+}
+
+
+
+
