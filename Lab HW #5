@@ -1,0 +1,232 @@
+#2
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#define size 15
+
+
+void push(int n);
+char pop();
+//void display();
+int stack[size],top=-1;
+void rev(char *s);
+int main()
+{
+   char str[]="reward";
+   rev(str);
+}
+void rev(char *s)
+{
+   int i=0;
+   for(i=0;s[i]!='\0';i++)
+   {
+       push(s[i]);
+   }
+   i=0;
+   char ret[100]="";
+   char temp=pop();
+   while(temp!=-1)
+   {
+       ret[i]=temp;
+       i++;
+       temp=pop();
+   }
+   printf("the reverse of %s is %s\n",s,ret);
+}
+void push(int n)
+{
+   if(top==size-1)
+   {
+       printf("the stack is full so insertion is not possible\n");
+   }
+   else
+   {
+       top++;
+       stack[top]=n;
+   }
+}
+char pop()
+{
+   char m;
+   if(top==-1)
+   {
+       return -1;
+   }
+   else
+   {
+       m=stack[top];
+       top--;
+       return m;
+   }
+}
+
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+#3
+
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+
+char left[100],result[100];
+int top = -1,l=0,r=0,m=0;
+char stack[100];
+void push(char,int);
+void pop(int);
+
+void main()
+{
+   int i,j;
+   char a[100];
+   printf("enter expression\n");
+   scanf("%s", &a);
+   
+   for (i = 0; i<strlen(a);i++)
+   {
+       //intially im storing spaces (' ') at each index
+       result[i]=' ';
+       if (a[i] == '(')
+       {
+           //if string contain '(' then we push that into stack
+           push(a[i],i);
+       }
+       else if (a[i] == ')')
+       {
+           //if string contain ')' then we pop it from stack
+           pop(i);
+       }
+   }
+   //since right paranthesis which are invalid are already appended to the results part with '?' in pop function, so in below loop we will append the '$' symbol to the indices which are in left array
+   for(i=0;i<l;i++)
+   {
+       for(j=0;j<strlen(a);j++)
+       {
+           if(left[i]==j)
+           {
+               result[j]='$';
+           }
+       }
+   }
+   //printing the result here
+   for(i=0;i<strlen(a);i++)
+   {
+       printf("%c",result[i]);
+   }
+   printf("\n");
+}
+
+// to push elements in stack
+
+void push(char a,int i)
+{
+   stack[top] = a;
+   //storing corresponding index of the string if it contain '(' in it in left named array
+   left[l++]=i;
+   top++;
+
+}
+
+
+// to pop elements from stack
+
+void pop(int i)
+{
+   if (top == -1)
+   {
+       //while we are performing the pop operation , top ==-1 means there are only right parathesis which are invalid so here im directly appending '?' mark to the result at that index
+       result[i]='?';
+   }  
+
+   else
+   {      
+       top--;
+       //everytime the left parathesis popped out,then i will make deletion of top index from the left array
+       l--;
+   }
+}
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+
+
+#4
+
+
+
+#include <stdio.h>
+#include<stdlib.h>
+
+struct Node {
+int data;
+struct Node * next;
+};
+struct Node * S = NULL;
+
+int max(int a, int b) {
+return a > b ? a : b;
+}
+void push(int);
+void fnew();
+int main() {
+push(1);
+push(2);
+push(-2);
+push(4);
+push(5);
+fnew();
+return 0;
+}
+
+void push(int n) {
+struct Node * temp;
+temp = (struct Node * ) malloc(sizeof(struct Node));
+if (S == NULL) {
+    S = (struct Node * ) malloc(sizeof(struct Node));
+    S -> data = 0;
+}
+int new_data = n + max(S -> data, 0);
+temp -> next = S;
+temp -> data = new_data;
+S = temp;
+}
+void fnew() {
+printf("%d", S -> data);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
