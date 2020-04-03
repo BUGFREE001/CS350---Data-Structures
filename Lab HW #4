@@ -1,0 +1,212 @@
+#2
+
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// A linked list node
+struct Node
+{
+char data;
+struct Node *next;
+};
+
+/* Given a reference (pointer to pointer) to the head
+of a list and an int, appends a new node at the end */
+void append(struct Node** head_ref, char new_data)
+{
+   //1. allocate node 
+   struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
+   struct Node *last = *head_ref; /* used in step 5*/
+
+   //2. put in the data 
+   new_node->data = new_data;
+
+   /* 3. This new node is going to be the last node, so make next of
+       it as NULL*/
+   new_node->next = NULL;
+
+   // 4. If the Linked List is empty, then make the new node as head 
+   if (*head_ref == NULL)
+   {
+   *head_ref = new_node;
+   return;
+   }
+
+   // 5. Else traverse till the last node 
+   while (last->next != NULL)
+       last = last->next;
+
+   //6. Change the next of last node 
+   last->next = new_node;
+   return;
+}
+
+void getIndex(struct Node* node, char c)
+{
+int count=0,index=0;
+while(node!=NULL)
+{
+if(node->data==c)
+{
+printf(" %d ",index);
+count++;//no of e's in the linkedlist
+}
+node=node->next;//promote to the next node
+index++; //index at the given node
+}
+printf("\n");
+printf(" count is %d",count);
+}
+
+//Driver program to test above functions
+int main()
+{
+//Start with the empty list 
+struct Node* head = NULL;
+
+// Insert 6. So linked list becomes 6->NULL
+append(&head, 'b');
+append(&head, 'e');
+append(&head, 'e');
+append(&head, 'e');
+append(&head, 'a');
+append(&head, 't');
+append(&head, 'e');
+append(&head, 'r');
+
+getIndex(head,'e');
+return 0;
+}
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+#3
+
+
+
+#include <stdio.h>
+#include<string.h>
+#include<stdlib.h>
+
+
+struct Node {
+    char data;
+    struct Node* next;
+};
+
+// This function prints contents of linked list starting from
+// the given node
+void printList(struct Node* n)
+{
+    printf("Linked List: \n");
+    while (n != NULL) {
+        printf("%c-->", n->data);
+        n = n->next;
+    }
+}
+
+
+int main()
+{
+    struct Node* head = NULL;
+    struct Node* tmp = NULL;
+    struct Node* pos = NULL;
+    struct Node* n = NULL;
+    struct Node* prev = NULL;
+    struct Node** ref2start;
+    char *char2delete;
+    char text[100] = "";
+    printf("Enter a string:");
+    scanf("%s", text);
+    int i=0;
+    head = (struct Node*)malloc(sizeof(struct Node));
+    head->data = text[0];
+    head->next=NULL;
+    pos = head;
+  
+    //Create List of characctes from entered string
+    for(i=1;i<strlen(text);i++)
+    {
+        tmp = (struct Node*)malloc(sizeof(struct Node));
+        if(tmp == NULL)
+        {
+            printf(" Memory can not be allocated.");
+            break;
+        }
+        else
+        {
+            tmp->data = text[i];      // links the num field of fnNode with num
+            tmp->next = NULL;        // links the address field of fnNode with NULL
+  
+            pos->next = tmp; // links previous node i.e. tmp to the fnNode
+            pos = pos->next;
+        }
+    }
+    printList(head);
+  
+    ref2start = &head;
+    n = *ref2start;
+  
+    printf("\nEnter Character to Delete: ");
+    scanf(" %c", char2delete);
+    prev=NULL;
+    printf("\nDeleting e from List: \n");
+    while (n != NULL) {
+        if(n->data == *char2delete)
+        {
+            if(prev==NULL){
+                *ref2start = n->next;
+                prev=*ref2start;
+            }
+            else
+            {
+                //Matching Node Found
+                prev->next=n->next;
+                n=n->next;
+            }
+        }
+        else
+        {
+            prev=n;
+            n=n->next;
+        }
+    }
+  
+    printList(head);
+    return 0;
+}
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+#4
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
