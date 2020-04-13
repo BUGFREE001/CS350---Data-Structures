@@ -196,7 +196,35 @@ int main()
 
 
 
+#include <stdio.h>
+int main()
+{
+int a[] = {3,9,10,1,30,40};
 
+int max= -9999999;
+int len = sizeof(a)/sizeof(a[0]);
+
+for(int u=0;u<len-3;u++)
+{
+for(int v = u+1;v<len-2;v++)
+{
+for(int w = v+1;w<len-1;w++)
+{
+for(int x = w+1 ; x<len ;x++ )
+{
+int expr = a[u]-a[v]+a[w]-a[x];
+if(expr>max)
+max = expr;
+printf("value of each iteration:%d\n",expr);
+}
+}
+}
+}
+
+printf("maximum value of the expression is:%d",max);
+
+return 0;
+}
 
 
 
