@@ -222,15 +222,77 @@ void printLL(struct node *head)
 
 
 
+--------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+#6
+
+
+
+
+#include <stdio.h>
+struct Node
+{
+    int data;
+    struct Node *next;
+};
+
+typedef struct Node Node;
+// return type is int because boolean is not supported by c programming language
+// a is head of linked list
+
+int is_loopLL(Node *a)
+{
+    // if linked list is null
+    if (a == NULL)
+        return 0;
+    // using floyd cycle finding algorithm
+
+    Node *slow, *fast;
+    slow = fast = a;
+
+    // check if next is not null
+    while (slow->next != NULL && fast->next != NULL && fast->next->next != NULL)
+    {
+        // move slow to next
+        slow = slow->next;
+
+        // move slow to 2 next
+        fast = fast->next->next;
+
+        // check if both are equal
+        if (slow == fast)
+            return 1;
+    }
+
+    // no loop
+    return 0;
+
+}
+int main()
+{
+}
+
+
+
+
+
+
+
 ---------------------------------------------------------------------------------------------------------------------------------------
+
+
 
 
 Please NOTE that: the output provided in question is slightly incorrect
 
 
 
-#7
 
+#7
 
 
 
