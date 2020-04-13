@@ -1,0 +1,109 @@
+#1 & #2 together
+
+
+
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+
+struct node
+{
+    int data;
+    struct node *left;
+    struct node *right;
+};
+
+struct node *newNode(int data)
+{
+    struct node *node = (struct node *)malloc(sizeof(struct node));
+    node->data = data;
+    node->left = NULL;
+    node->right = NULL;
+    return (node);
+}
+
+// is_contain function
+// returns true or false
+bool is_contain(struct node* tree, int key) {
+    if (tree) {
+        if (tree->data == key){
+            return true;
+        }
+        else {
+            return (is_contain(tree->left, key) || is_contain(tree->right, key));
+        }
+    }
+    return false;
+}
+
+// function to calculate sum of binary tree
+int sum(struct node* tree) {
+    if(tree) {
+        return tree->data + sum(tree->left) + sum(tree->right);
+    }
+    return 0;
+}
+
+// function to calculate number of nodes of binary tree
+int number(struct node* tree) {
+    if(tree) {
+        return 1 + number(tree->left) + number(tree->right);
+    }
+    return 0;
+}
+
+// this function calculates average
+// it takes help of sum and number functions
+double ave(struct node* tree) {
+    int n = number(tree);
+    int s = sum(tree);
+    double average = 1.0 * s / n;
+    return average;
+}
+
+int main()
+{
+    // creation of binary tree
+    struct node *root = newNode(1);
+    root->left = newNode(2);
+    root->right = newNode(3);
+    root->left->left = newNode(4);
+    root->left->right = newNode(5);
+    root->left->left->left = newNode(8);
+    root->left->left->right = newNode(9);
+    root->right->left = newNode(6);
+    root->right->right = newNode(7);
+    root->right->left->right = newNode(10);
+    root->right->right->right = newNode(11);
+
+    // calling methods for teting
+    printf("%d\n", is_contain(root, 5) ? 1 : -1);
+
+    // 1 means true
+    printf("%f", ave(root));
+
+    return 0;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
