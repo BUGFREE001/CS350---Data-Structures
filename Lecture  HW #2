@@ -223,3 +223,237 @@ void printLL(struct node *head)
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+#7
+
+
+
+
+
+#include<stdio.h>
+#include<stdlib.h>
+
+struct node
+{
+   int coeff, exp;
+   struct node *next;
+};
+
+struct node *Ptr1, *Ptr2, *Ptr3;
+//creates new node and fill the input
+struct node * buildNode(int coeff, int exp)
+{
+   struct node *ptr = (struct node *)malloc(sizeof (struct node));
+   ptr->coeff = coeff;
+   ptr->exp = exp;
+   ptr->next = NULL;
+   return ptr;
+}
+/* insert data in decending order - based on exp value */
+void polynomial_insert(struct node ** myNode, int coeff, int exp)
+{
+   struct node *lPtr, *pPtr, *qPtr = *myNode;
+   lPtr = buildNode(coeff, exp);
+
+   /* inserting new node at appropriate position */
+   if (*myNode == NULL || (*myNode)->exp < exp)
+   {
+       *myNode = lPtr;
+       (*myNode)->next = qPtr;
+       return;
+   }
+
+   /* placing new node between two nodes or end of node */
+   while (qPtr)
+   {
+       pPtr = qPtr;
+       qPtr = qPtr->next;
+       if (!qPtr)
+       {
+           pPtr->next = lPtr;
+           break;
+}
+       else if ((exp < pPtr->exp)&&(exp > qPtr->exp))
+       {
+           lPtr->next = qPtr;
+           pPtr->next = lPtr;
+           break;
+       }
+}
+
+}
+
+/* inserting new node with resultant data into the output list (n1) */
+void polynomial_add(struct node **n1, int coeff, int exp)
+{
+   struct node *x = NULL, *temp = *n1;
+if (*n1 == NULL || (*n1)->exp < exp)
+{
+       /* adding at the front */
+       *n1 = x = buildNode(coeff, exp);
+       (*n1)->next = temp;
+}
+else
+{
+       while (temp)
+       {
+           if (temp->exp == exp)
+           {
+               /* updating the co-efficient value alone */
+               temp->coeff = temp->coeff + coeff;
+               return;
+           }
+           if (temp->exp > exp && (!temp->next || temp->next->exp < exp))
+           {
+               /* inserting in the middle or end */
+               x = buildNode(coeff, exp);
+               x->next = temp->next;
+               temp->next = x;
+               return;
+           }
+           temp = temp->next;
+       }
+       x->next = NULL;
+       temp->next = x;
+}
+}
+
+void polynomial_multiply(struct node **n1, struct node *n2, struct node *n3)
+{
+   struct node * temp;
+int coeff, exp;
+temp = n3;
+// if both input list are absent, then output list is NULL
+if (!n2 && !n3)
+return;
+
+//input list 1(n2) is absent, then output list is input list2 (n3)
+if (!n2)
+{
+       *n1 = n3;
+}
+else if (!n3)
+{
+//list n3 is absent, then o/p list is n2
+       *n1 = n2;
+}
+else
+{
+       while (n2)
+       {
+           while (n3)
+           {
+               /* multiply coeff & add exps */
+               coeff = n2->coeff * n3->coeff;
+               exp = n2->exp + n3->exp;
+               n3 = n3->next;
+               polynomial_add(n1, coeff, exp);
+           }
+           n3 = temp;
+           n2 = n2->next;
+       }
+}
+return;
+}
+
+/* delete the given input list */
+struct node * poly_deletelist(struct node *ptr)
+{
+struct node *temp;
+while (ptr)
+   {
+       temp = ptr->next;
+       free(ptr);
+       ptr = temp;
+}
+return NULL;
+}
+
+void polynomial_view(struct node *ptr) {
+int i = 0;
+int flag=0;
+while (ptr)
+{
+       if(ptr->exp != 0 || ptr->exp != 1 ){
+           if(ptr->coeff > 0 && flag==0 ){
+               printf("%dx^%d", ptr->coeff,ptr->exp);
+               flag++;
+           }
+           else if (ptr->coeff > 0 && flag==1 )
+               printf("+%dx^%d", ptr->coeff,ptr->exp);
+           else if(ptr->coeff < 0)
+               printf("%dx^%d", ptr->coeff,ptr->exp);
+       }
+       else if (ptr->exp == 0){
+           if(ptr->coeff > 0 && flag==0 ){
+               printf("%d", ptr->coeff);
+               flag++;
+           }
+       else if (ptr->coeff > 0 && flag==1 )
+           printf("+%d", ptr->coeff);
+       else if(ptr->coeff < 0)
+           printf("%d", ptr->coeff);
+       }
+       else if( ptr->exp == 1 ){
+           if(ptr->coeff > 0 && flag==0 ){
+               printf("%dx", ptr->coeff);
+               flag++;
+           }
+       else if (ptr->coeff > 0 && flag==1 )
+           printf("+%dx", ptr->coeff);
+       else if(ptr->coeff < 0)
+           printf("%dx", ptr->coeff);
+       }
+       ptr = ptr->next;
+       i++;
+}
+printf("\n");
+return;
+}
+
+int main (int argc, char *argv[])
+{
+int coeff, exp, i;
+int count;
+printf("Enter the number of coeffs in the polynomial:");
+scanf("%d",&count);
+for(i=0;i<count;i++){
+printf("Enter the coeff part:");
+scanf("%d", &coeff);
+printf("Enter the exp part:");
+scanf("%d",&exp);
+polynomial_insert(&Ptr1, coeff, exp);
+}
+printf("Enter the number of coeffs in the polynomial:");
+scanf("%d",&count);
+for(i=0;i<count;i++){
+printf("Enter the coeff part:");
+scanf("%d", &coeff);
+printf("Enter the exp part:");
+scanf("%d",&exp);
+polynomial_insert(&Ptr2, coeff, exp);
+}
+printf("Polynomial Expression 1: ");
+polynomial_view(Ptr1);
+printf("Polynomial Expression 2: ");
+polynomial_view(Ptr2);
+
+polynomial_multiply(&Ptr3, Ptr1, Ptr2);
+
+printf("Output:\n");
+polynomial_view(Ptr3);
+
+Ptr1 = poly_deletelist(Ptr1);
+Ptr2 = poly_deletelist(Ptr2);
+Ptr3 = poly_deletelist(Ptr3);
+
+return 0;
+}
+
+
+
+
+
+
