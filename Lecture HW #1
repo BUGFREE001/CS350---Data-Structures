@@ -108,82 +108,97 @@ printList(head);
 
 
 
-#include <stdio.h>
-#include <stdlib.h>
-
-struct Node
+#include<stdio.h>
+#include<stdlib.h>
+//declare node structure
+struct node
 {
-    int data;
-    struct Node *next;
+int data;
+struct node *next;
 };
-
-void push(struct Node** head_ref, int new_data)
+struct node *insert(struct node *head,int data)
 {
-    struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
-    new_node->data = new_data;
-    new_node->next = (*head_ref);
-    (*head_ref)    = new_node;
-}
-
-void Delete_Node_value(struct Node **head_ref, int key)
+//allocate memory for new node
+struct node *newnode=(struct node*)malloc(sizeof(struct node*));
+newnode->data=data;
+if(head==NULL)
 {
-struct Node* temp = *head_ref, *prev;
-    while (temp != NULL && temp->data == key)
-    {
-        *head_ref = temp->next;
-        free(temp);
-        temp = *head_ref;
-    }
-
-    while (temp != NULL)
-    {
-        while (temp != NULL && temp->data != key)
-        {
-            prev = temp;
-            temp = temp->next;
-        }
-
-        if (temp == NULL) return;
-        prev->next = temp->next;
-        free(temp);
-    temp = prev->next;
-    }
+newnode->next=NULL;
+head=newnode;
 }
-
-void printList(struct Node *node)
+else
 {
-    while (node != NULL)
-    {
-        printf(" %d ", node->data);
-        node = node->next;
-    }
+//more than one node to be added
+struct node *p=head;
+while(p->next!=NULL)
+p=p->next;
+p->next=newnode;
+newnode->next=NULL;
 }
-
+return head;
+}
+struct node *Delete_Node_value(struct node *head)
+{
+struct node *p=head,*q,*temp,*temp1,*q1;
+int flag;
+while(p!=NULL)
+{
+temp=p;
+q1=p;
+q=p->next;
+flag=0;
+while(q!=NULL) //loop through next node in list
+{
+if(p->data==q->data)
+{
+temp1=q;
+if(q->next!=NULL)
+{
+q1->next=q->next;
+temp1->next=NULL;
+}
+else
+q1->next=NULL;
+flag=1;
+q=q1->next;
+free(temp1); //delete memory once duplicate is found
+}
+else
+{
+if(q!=NULL)
+q=q->next;
+q1=q1->next;
+}
+}
+p=p->next;   
+if(flag==1)
+{
+head=head->next;
+temp->next=NULL;
+free(temp);
+}
+}
+return head;
+}
 int main()
 {
-struct Node* head = NULL;   
-
-    push(&head, 0);
-    push(&head, 2);
-    push(&head, 3);
-    push(&head, 2);
-    push(&head, 8);
-    push(&head, 1);
-    push(&head, 2);
-    push(&head, 2);   
-
-    int key = 2;   
-
-    puts("Created Linked List: ");
-    printList(head);   
-    Delete_Node_value(&head, key);
-    puts("\nLinked List after Deletion: ");   
-    printList(head);
-
-    return 0;
-
+struct node *head=NULL;
+head=insert(head,1);
+head=insert(head,2);
+head=insert(head,1);
+head=insert(head,3);
+head=insert(head,2);
+head=Delete_Node_value(head);
+//display list
+struct node *p=head;
+printf("Head->");
+while(p!=NULL)
+{
+printf("%d->",p->data);
+p=p->next;
 }
-
+printf("NULL");
+}
 
 
 
