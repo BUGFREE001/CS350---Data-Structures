@@ -209,94 +209,116 @@ printf("NULL");
 
 
 
-#include <bits/stdc++.h>
-using namespace std;
+#include<stdio.h>
+#include<stdlib.h>
 
 struct node{
-int data;
-node* next;
+   int data;
+   struct node *link;
 };
 
-node* newNode(int data)
+void Delete_Dupl_Node(struct node *start)
 {
-node* temp= new node();
-temp->data=data;
-temp->next=NULL;
-return temp;
+   /* I am going to use hashing to remove duplicate */
+   /* create a hash table and initialize with zero */
+   int h[1000000];
+   struct node *ptr,*prev;
+
+   for(int i=0;i<=1000000;i++)
+       h[i]=0;
+
+
+   ptr=start;
+   prev = ptr; /* set previous pointer */
+   h[ptr->data] = h[ptr->data] + 1;
+   ptr=ptr->link;
+   while(ptr!=NULL)
+   {
+      
+       h[ptr->data] = h[ptr->data] + 1; /* increae the count value of element in hash table */
+
+       /* if count of element is greater than one then delete it */
+       if(h[ptr->data] > 1)
+       {
+           /* for deleting duplicate */
+           prev->link = ptr->link;
+           //prev = ptr;
+           ptr=ptr->link;
+
+       }
+       else
+       {
+           prev = ptr;
+           ptr=ptr->link;
+
+       }
+   }
+
+  
 }
 
-void Delete_Dupl_Node(node **head)
+int main()
 {
-unordered_map<int,int> count_occurence;
-node* temp = *head;
-while(temp!=NULL)
-{
-count_occurence[temp->data]++; // count number of occurence of each element
-temp=temp->next;
-}
-temp=*head;
-node* prev=*head;
-while(temp!=NULL)
-{
-if(count_occurence[temp->data]>1) //its duplicate is present
-{
-count_occurence[temp->data]--;
-if(temp==*head)
-{
-*head=(*head)->next; //head node is duplicate node so transfer head pointer to next node
-free(temp); //release the duplicate node
-temp=*head; // pointing temp to new head node
-prev=*head;
-}
-else
-{
-prev->next=temp->next;
-free(temp);
-temp=prev->next;
-}
-}
-else
-{
-prev=temp;
-temp=temp->next;
-}
-}
-}
-void printList(node* head)
-{
-node* temp=head;
-while(temp!=NULL)
-{
-cout<<temp->data<<" ";
-temp=temp->next;
-}
-}
-int main() {
-// List: 1->2->3->1->1->4->3->NULL
-   node* head=newNode(1);
-   node* temp=head;
-   temp->next=newNode(2);
-   temp=temp->next;
-   temp->next=newNode(3);
-   temp=temp->next;
-   temp->next=newNode(1);
-   temp=temp->next;
-   temp->next=newNode(1);
-   temp=temp->next;
-   temp->next=newNode(4);
-   temp=temp->next;
-   temp->next=newNode(3);
-   temp=temp->next;
-   cout<<"Initial list is: ";
-   printList(head);
-   cout<<endl;
-   Delete_Dupl_Node(&head);
-   cout<<"List after removing duplicates: ";
-   printList(head);
-   
+   int item,n,i;
+   char ch;
+   struct node *start,*temp,*ptr,*new,*prev;
+   start=(struct node *)malloc(sizeof(struct node));
+
+   printf("Enter total no. of element of linked list: ");
+   scanf("%d",&n);
+
+   /* read 1st element at start node */
+   i=0;
+   printf("Enter %d element: ",i+1);
+   scanf("%d",&start->data);
+   start->link=NULL;
+  
+  
+   /* read all other element one by one */
+   ptr=start;
+   for(i=1;i<n;i++)
+   {
+       printf("Enter %d element: ",i+1);
+       temp=(struct node *)malloc(sizeof(struct node));
+       scanf("%d",&temp->data);
+       ptr->link=temp;
+       ptr=temp;
+
+   }
+   ptr->link=NULL;
+
+   /* printont the original list */
+   printf("\noriginal list is:\n");
+  
+   printf("Head->");
+   ptr=start;
+   while(ptr!=NULL)
+   {
+       printf("%d->",ptr->data);
+       ptr=ptr->link;
+   }
+   printf("NULL\n");
+
+  
+   /* calling Delete_Dupl_Node() function*/
+
+   Delete_Dupl_Node(start);
+  
+
+   /* printing the result */
+   printf("\nmodified list is:\n");
+   printf("Head->");
+   ptr=start;
+   while(ptr!=NULL)
+   {
+       printf("%d->",ptr->data);
+       ptr=ptr->link;
+   }
+   printf("NULL\n");
+
    return 0;
-}
 
+}
 
 
 -------------------------------------------------------------------------------------------------------------------------------
