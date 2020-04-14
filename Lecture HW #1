@@ -4,122 +4,94 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
-struct node //create our node
+struct node //template of node
 {
-   int num;
-   struct node *ptr;
+int data;
+struct node *next;
 };
+void printList(struct node *head) //this method prints the list
+{
+struct node *temp=head; //assigning head to temp node
+while(temp->next!=NULL) //iterating temp node
+{
+printf("%d->",temp->data); //printing node data
+temp=temp->next; //moving a node further
+}
+printf("%d",temp->data);
+}
+void Delete_LinkList_Node(struct node **head,int element)
+{
+struct node *temp=*head; //temporary node to store head reference
+struct node *prev=NULL; //it stores previous node of current node
+while(temp!=NULL)
+{
+if(temp->data==element) //if current node matches given key
+{
+if(prev==NULL) //if it is head node
+{
+*head=temp->next; //moving head to next node
+free(temp); //removing current node from head
+temp=*head; //assigning temp to new head
+}
+else
+{
+prev->next=temp->next; //assigning previous of current node to next of current node
+temp=prev->next; //moving a node further
+}
+  
+  
+}
+else
+{
+prev=temp; //storing previous of current
+temp=temp->next; //moving a node further
+}
+  
+}
 
-
-void printout(struct node* head); //prototype of the function
-void deleteNode(struct node * head,struct node * temp);
-struct node* makeNode(int i);
-void insertFront(struct node** head,struct node** inData,struct node** temp );
-
-
+}
 int main()
 {
-   struct node *head,*inData,*temp=0,*deleteMe; //pointers for linked list
-   int choice,i,numberOfNode; //it will keep track of node numbe
-head = 0; //initaited head with 0
-   bool listCreated=false;
-   inData = makeNode(1);
-insertFront(&head,&inData,&temp);
-inData = makeNode(2);
-insertFront(&head,&inData,&temp);
-inData = makeNode(1);
-insertFront(&head,&inData,&temp);
-inData = makeNode(3);
-insertFront(&head,&inData,&temp);
+struct node *head=NULL;
+struct node *last=NULL;
+int element;
+//int choice=1;
+int data=1;
+printf("Enter(-1 to stop): ");
+scanf("%d",&data);
+while(data!=-1) //reading data util -1 is occured
+{
+if(head==NULL) //if list is empty
+{
+head=(struct node *) malloc(sizeof(struct node));
+head->data=data;
+head->next=NULL;
+last=head;
+}
+else //isnerting next to last node
+{
+struct node *newnode=(struct node *)malloc(sizeof(struct node));
+newnode->data=data;
+newnode->next=NULL;
+last->next=newnode;
+last=newnode;
   
-   temp->ptr = 0; //set 0 to last node so that we can identify last node.
-printf("\nList before delete");
-printout(head);
-printf("\nDeleting 1......");
-deleteMe = makeNode(1);
+}
+printf("Enter(-1 to stop): ");
+scanf("%d",&data);
   
-printf("\n\nList after deleting......");
-deleteNode(head,deleteMe);
-printout(head);
-return 0;
-
-
 }
-struct node* makeNode(int i){
-struct node * nodeCreat;
-nodeCreat = (struct node *)malloc(sizeof(struct node)); //allocate memory to new node
-nodeCreat-> num = i;
-return nodeCreat;
-
-}
-
-void insertFront(struct node** head,struct node** inData,struct node** temp ){
-if (*head != 0) //if list is not empty
-               {
-                   (*temp)->ptr = *inData;
-                   *temp = *inData;
-               }
-               else //if list is empty
-               {
-                   *head = *temp = *inData;
-               }
-
-}
-
-void printout(struct node * head){
-   struct node *temp;
-   temp = head;
-   int count=0;
-printf("\n");
-   while (temp != 0)
-   {
-       printf("%d ",temp->num);
-       temp = temp -> ptr;
-       count++;
-if(count==10){
-printf("\n");
-count=0;
-}
-   }
-
-
-}
-
-
-void deleteNode(struct node * head,struct node * temp){
-while(head->num == temp->num)
-{  
+printList(head); //printing current list
+printf("\nEnter element to be deleted: ");
+scanf("%d",&element);
   
-struct node * deleting = temp;
-/* Copy the data of next node to head */
-head->num = head->ptr->num;
+Delete_LinkList_Node(&head,element);
 
-// store address of next node
-deleting = head->ptr;
-
-// Remove the link of next node
-head->ptr = head->ptr->ptr;
-
-// free memory
-free(deleting);
-
+printf("After deletion:");
+printList(head);
 }
 
 
-struct node *prev = head;
-while(prev->ptr != NULL){
-   if (prev->ptr->num == temp->num){
-       // Remove node from Linked List
-        prev->ptr = prev->ptr->ptr;
-      
-       }
-       prev = prev->ptr;
-   }
-  
-
-return;
-}
 
 
 
