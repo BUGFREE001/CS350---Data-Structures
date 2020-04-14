@@ -196,39 +196,113 @@ int main()
 
 
 
+
 #include <stdio.h>
-int main()
-{
-int a[] = {3,9,10,1,30,40};
+#include<stdlib.h>
 
-int max= -9999999;
-int len = sizeof(a)/sizeof(a[0]);
+// struct for the node of list
+struct list
+{
+char data;
+struct list *next;
+};
 
-for(int u=0;u<len-3;u++)
+// returns a new object created of class
+struct list* newNode(char k)
 {
-for(int v = u+1;v<len-2;v++)
-{
-for(int w = v+1;w<len-1;w++)
-{
-for(int x = w+1 ; x<len ;x++ )
-{
-int expr = a[u]-a[v]+a[w]-a[x];
-if(expr>max)
-max = expr;
-printf("value of each iteration:%d\n",expr);
-}
-}
-}
+struct list *temp = (struct list*)malloc(sizeof(struct list));
+  
+temp->data = k;
+temp->next = NULL;
+return temp;
 }
 
-printf("maximum value of the expression is:%d",max);
+// insert a character into list
+void insert(struct list* head, char k)
+{
+// if head is null then first it initialize it, otherwise add element to the end of list
+if(head == NULL)
+{
+head = newNode(k);
+}
+else
+{
+struct list* temp = head;
+  
+while(temp->next != NULL)
+{
+temp = temp->next;
+}
+  
+temp->next = newNode(k);
+}
+}
 
+// function to print list element
+void printList(struct list* head)
+{
+struct list* temp = head;
+  
+while(temp != NULL)
+{
+printf("%c ",temp->data);
+temp = temp->next;
+}
+printf("\n");
+}
+
+// function to find common sequence list
+struct list* cmmSq(struct list* list1, struct list* list2)
+{
+struct list* temp1 = list1;
+struct list* temp2 = list2;
+
+struct list* result = (struct list*)malloc(sizeof(struct list));
+
+while(temp1 && temp2)
+{
+// if current elements in both the lists are same insert it into result list
+if (temp1->data == temp2->data)
+{
+insert(result,temp1->data);
+}
+
+// advance the pointers to next elements
+temp1 = temp1->next;
+temp2 = temp2->next;
+}
+
+return result;
+}
+int main() {
+  
+char la[] = {'C','o','m','p','l','i','m','e','n','t'};
+char lb[] = {'c','o','m','p','l','e','m','e','n','t'};
+  
+struct list *list1 = (struct list*)malloc(sizeof(struct list));
+struct list *list2 = (struct list*)malloc(sizeof(struct list));
+  
+int length1 = sizeof(la)/sizeof(la[0]);
+int lenght2 = sizeof(lb)/sizeof(lb[0]);
+  
+// create lists from given arrays
+for(int i=0;i<length1;i++)
+insert(list1,la[i]);
+for(int i=0;i<lenght2;i++)
+insert(list2,lb[i]);
+  
+// print created lists
+printf("list1 :- ");
+printList(list1);
+printf("list2 :-");
+printList(list2);
+  
+struct list* result = cmmSq(list1, list2);
+
+printf("resultant list :- ");
+printList(result);
 return 0;
 }
-
-
-
-
 
 
 
