@@ -382,7 +382,141 @@ int main(){
 
 
 
+#include <stdio.h>
+#include <stdlib.h>
 
+//structure declaration
+struct node
+{
+int data;
+struct node *next;
+};
+
+struct node *head = NULL;
+
+//function to print the node value with address
+void printList()
+{
+//declare a structure type variable and initialize with head
+struct node *ptr = head;
+
+while(ptr != NULL)
+{
+//display the node address, value stored in node and the address of the next node
+printf("%d ", ptr->data);
+  
+//assign the pointer to the next node
+ptr = ptr->next;
+}
+}
+
+//function to insert a new node at the front of the linked list
+void insert(int data)
+{
+struct node *link = (struct node*) malloc(sizeof(struct node));
+  
+//assign the new node data field with the paramener value
+link->data = data;
+//assigne the new node address field with the head pointer
+link->next = head;
+  
+//assign the head node to the new node
+head = link;
+}
+
+//function two swap minimum and maximum element
+void swap_int_linked_list(s1)
+{
+//declare structure type variables
+struct node *ptr = head;
+struct node *minPtr = NULL;
+struct node *maxPtr = NULL;
+  
+//variables declaration
+int min, max, temp;
+min = ptr->data;
+max = ptr->data;
+minPtr = ptr;
+maxPtr = ptr;
+//find the address of maximum and minimum element
+while(ptr != NULL)
+{
+if(min>ptr->data)
+{
+min = ptr->data;
+minPtr = ptr;
+}
+if(max<ptr->data)
+{
+max = ptr->data;
+maxPtr = ptr;
+}
+  
+ptr = ptr->next;
+}
+  
+//swap the number
+temp = minPtr->data;
+minPtr->data = maxPtr->data;
+maxPtr->data = temp;
+}
+
+//function two swap minimum and maximum element
+void swap_char_linked_list(s1)
+{
+//declare structure type variables
+struct node *ptr = head;
+struct node *minPtr = NULL;
+struct node *maxPtr = NULL;
+  
+//variables declaration
+int min, max, temp;
+min = ptr->data;
+max = ptr->data;
+minPtr = ptr;
+maxPtr = ptr;
+//find the address of maximum and minimum element
+while(ptr != NULL)
+{
+if(min>ptr->data)
+{
+min = ptr->data;
+minPtr = ptr;
+}
+if(max<ptr->data)
+{
+max = ptr->data;
+maxPtr = ptr;
+}
+  
+ptr = ptr->next;
+}
+  
+//swap the number
+temp = minPtr->data;
+minPtr->data = maxPtr->data;
+maxPtr->data = temp;
+}
+
+int main() {
+
+//insert 15 to the linked list
+insert(2);
+insert(1);
+insert(3);
+struct node *s1 = head;
+  
+//display the linked list by calling printList() function
+printf("The linked list is: \n");
+printList();
+swap_int_linked_list(s1);
+  
+//display the linked list by calling printList() function
+printf("\n\nThe linked list after swapping is: \n");
+printList();
+return 0;
+
+}
 
 
 
