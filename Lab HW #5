@@ -78,87 +78,74 @@ char pop()
 
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include<string.h>
 
-
-char left[100],result[100];
-int top = -1,l=0,r=0,m=0;
-char stack[100];
-void push(char,int);
-void pop(int);
-
-void main()
-{
-   int i,j;
-   char a[100];
-   printf("enter expression\n");
-   scanf("%s", &a);
-   
-   for (i = 0; i<strlen(a);i++)
-   {
-       //intially im storing spaces (' ') at each index
-       result[i]=' ';
-       if (a[i] == '(')
-       {
-           //if string contain '(' then we push that into stack
-           push(a[i],i);
-       }
-       else if (a[i] == ')')
-       {
-           //if string contain ')' then we pop it from stack
-           pop(i);
-       }
-   }
-   //since right paranthesis which are invalid are already appended to the results part with '?' in pop function, so in below loop we will append the '$' symbol to the indices which are in left array
-   for(i=0;i<l;i++)
-   {
-       for(j=0;j<strlen(a);j++)
-       {
-           if(left[i]==j)
-           {
-               result[j]='$';
-           }
-       }
-   }
-   //printing the result here
-   for(i=0;i<strlen(a);i++)
-   {
-       printf("%c",result[i]);
-   }
-   printf("\n");
+int front = -1; //front of stack
+//push method for stack
+void push(int stack[],int x){
+front++;
+stack[front] = x;
 }
 
-// to push elements in stack
-
-void push(char a,int i)
-{
-   stack[top] = a;
-   //storing corresponding index of the string if it contain '(' in it in left named array
-   left[l++]=i;
-   top++;
-
+//pop method for stack
+void pop(){
+if(front == -1){
+return ;
+}
+front--;
 }
 
+int main() {
+// for storing the input expression
+char input[1000006];
+printf("Enter a expression:\n");
+scanf("%s",input);
+int length = strlen(input); //storing the length of input expression
+int i; //iterator for loop
+int stack[length]; //imitating stack in c which stores frontex of parantheses
+memset(stack,-1,sizeof(stack));// initalizing stack with -1
+for(i = 0; i < length; i++){
+//if it is opening bracket it is pushed in stack always
+if(input[i] == '('){
+push(stack,i);
+}
+//if closing bracket
+else if(input[i] == ')'){
+//if stack is empty we will push it everytime because it will be unmatched always in future
+if(front == -1){
+push(stack,i);
+}
+//if stack is not empty but top of stack has closing bracket only then also we push
+else if(front != -1 && input[stack[front]] == ')'){
+push(stack,i);
+}
+//if stack is not empty but top of stack has opening bracket only then wepop
+else if(front != -1 && input[stack[front]] == '(') {
+pop();
+}
+}
+}
+//chaning input string with leftover values in stack
 
-// to pop elements from stack
-
-void pop(int i)
-{
-   if (top == -1)
-   {
-       //while we are performing the pop operation , top ==-1 means there are only right parathesis which are invalid so here im directly appending '?' mark to the result at that index
-       result[i]='?';
-   }  
-
-   else
-   {      
-       top--;
-       //everytime the left parathesis popped out,then i will make deletion of top index from the left array
-       l--;
-   }
+//all the leftover indexes in stack is unmateched parantheses index.
+for(i = 0; i <= front; i++){
+if(input[stack[i]] == '(')
+input[stack[i]] = '$';
+if(input[stack[i]] == ')')
+input[stack[i]] = '?';
 }
 
+//chainging input string to highlight only umatched parantheses
+for(i = 0; i < length; i++){
+if(input[i] != '$' && input[i] != '?')
+input[i] = ' ';
+}
+//printing file answer string
+printf("%s\n",input);
+
+return 0;
+
+}
 
 
 
