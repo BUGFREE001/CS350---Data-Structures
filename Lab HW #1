@@ -384,7 +384,7 @@ int main(){
 
 #include <stdio.h>
 #include <stdlib.h>
-
+ 
 //structure declaration
 struct node
 {
@@ -425,7 +425,7 @@ head = link;
 }
 
 //function two swap minimum and maximum element
-void swap_int_linked_list(s1)
+void swap_int_linked_list(struct node *s1)
 {
 //declare structure type variables
 struct node *ptr = head;
@@ -462,7 +462,7 @@ maxPtr->data = temp;
 }
 
 //function two swap minimum and maximum element
-void swap_char_linked_list(s1)
+void swap_char_linked_list(struct node *s1)
 {
 //declare structure type variables
 struct node *ptr = head;
@@ -517,24 +517,3 @@ printList();
 return 0;
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
