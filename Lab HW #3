@@ -147,86 +147,110 @@ printCLL();
 
 
 
-#include <stdio.h>
-#include <stdlib.h>
-struct node
+#include<stdio.h> //headerfiles declaration
+#include<stdlib.h>
+#include<malloc.h>
+ 
+struct node // structure type nodedeclaration
 {
-struct node * prev;
-int data;
-struct node * next;
+
+    int info; // integer field
+    struct node *lptr,*rptr; // left pointer, right pointer
+
 };
 
-void dul_LL_delete_index(struct node *ls,int n)
+
+struct node *ls,*head,*tail,*new,*t,*p;
+// different types of variables declaration
+
+int i,x,pos;
+void dul_insert(int); // function declaration dul_insert
+void dul_display(); //function declaration dul_display
+void dul_LL_delete_index(struct node*,int); // function declaration dul_LL_delete_index
+
+void isEmpty();
+
+int main() // main function
 {
-if (ls)
+
+    isEmpty();
+    dul_insert(11); // insert elements 11 into double linked list
+    dul_insert(9); // insert elements 9 into double linked list
+    dul_insert(13); // insert elements 13 into double linked list
+    dul_insert(8); // insert elements 8 into double linked list
+    dul_display(); // calling display function
+    ls=head;
+    isEmpty();
+
+    dul_LL_delete_index(ls,3); // passing linked list and position into function
+    dul_display(); // display linked list
+
+return 0;
+
+} // end main function
+
+void isEmpty()
 {
-for(int i=0;i<n-2;i++)
+
+    if(head=='\0' && tail=='\0')
+        printf("\nList is Empty\n");
+
+    else
+        printf("\nList is Not Empty\n");
+
+}
+void dul_LL_delete_index(struct node *h,int pos) // function body for dul_LL_delete_index
 {
-ls=ls->next;
-}
-ls->next=ls->next->next;
-ls->next->prev=ls;
-}
-  
-else
+
+    t=h; // store head address into t
+    p=t->rptr; //store next address into p
+
+    for(i=0;i<pos-1;i++) // loop repeat until all elements visited
+  {
+      p=t; // update t and p
+      t=t->rptr;
+  }
+
+  printf("\ndel ele is %d\n",t->info);
+  p->rptr=t->rptr; // update right address and left address of the index node
+  (t->rptr)->lptr=p;
+  free(t); // delete index node
+} // end dul_LL_delete_index function
+
+
+void dul_insert(int x) // function body dul_insert
 {
-printf("list is empty");
-}
-}
-int main()
+
+    new=(struct node*)malloc(sizeof(struct node)); // create memory for new node
+    new->info=x; // store x into node
+    new->lptr=NULL; // update left and right address to NULL
+    new->rptr=NULL;
+
+    if(head==NULL) // check if list is empty
+        head=tail=new; // if true then head and tail are becomes new node
+
+    else // otherwise
+    {
+        tail->rptr=new; // update tail left and right address fields and new
+        new->lptr=tail;
+        tail=new;
+    }
+} // end dul_insert function
+
+void dul_display() // function body for dul_display
 {
-  
-   struct node *head,*second,*third,*fourth,*temp;
-   head= (struct node *)malloc(sizeof(struct node));
-   second= (struct node *)malloc(sizeof(struct node));
-   third= (struct node *)malloc(sizeof(struct node));
-   fourth= (struct node *)malloc(sizeof(struct node));
+    t=head; // assign head address to t
+    printf("\n");
 
-// first node
-   head->prev=NULL;
-   head->data=11;
-  
-// second node
+    while(t!='\0') // Loop until tail goes to NULL
+    {
+        printf("%d->",t->info); // display integer field fron node
+        t=t->rptr; // address moves to next
+    }
 
-head->next=second;
-second->prev=head;
-second->data=9;
-  
-// third node
+    printf("\n");
+} // end dul_display function
 
-second->next=third;
-third->prev=second;
-third->data=13;
-
-// fourth node
-
-third->next=fourth;
-fourth->prev=third;
-fourth->data=8;
-fourth->next=NULL;
-
-  
-   printf("Before deletion\n");
-   temp=head;
-   while(temp!=NULL)
-   {
-   printf("%d ",temp->data);
-   temp=temp->next;
-   }
-  
-dul_LL_delete_index(head,3);
-printf("\n");
-
-printf("After deletion\n");
-    temp=head;
-   while(temp!=NULL)
-   {
-   printf("%d ",temp->data);
-   temp=temp->next;
-   }
-  
-   return 0;
-}
 
 
 
