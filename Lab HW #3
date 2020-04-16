@@ -336,69 +336,100 @@ return 0;
 
 
 
-#include <stdio.h>
+#include<stdio.h>
+#include<stdlib.h>
 
-struct Node { //Creating a structure for node
-char data;
-struct node *previous;
-struct node *next;
-} *head,*last;
+struct Node {
+char value;
+struct Node* nextPointer;
+struct Node* previousPointer;
+};
 
+typedef struct Node NODE;
 
-void push(struct Node** head, char data1)
-{
-struct Node* new1 = (struct Node*)malloc(sizeof(struct Node));
-new1->data = data1;
-new1->next = (*head);
-new1->previous = NULL;
-if ((*head) != NULL)
-(*head)->previous = new1;
-(*head) = new1;
+NODE *head;
+
+void reverse() {
+
+NODE *temp = NULL;   
+NODE *traversalNode = head;
+
+while (traversalNode != NULL) {
+
+temp = traversalNode->previousPointer;
+traversalNode->previousPointer = traversalNode->nextPointer;
+     
+   //Storing temp into the traversalNode nextPointer
+traversalNode->nextPointer = temp;
+traversalNode = traversalNode->previousPointer;
+}   
+
+//Checking if the list is not empty or more than one node is present
+   //Then set head as the temp->previousPointer
+if(temp != NULL )
+head = temp->previousPointer;
 }
 
+//Below function will insert a new node at the end of the doubly linked list with the value passed as parameter
+void insertAtEnd(char value) {
 
-void rev_dul_LL(struct Node **head)
-{
-struct Node *any = NULL;
-struct Node *curr = *head;
-while (curr != NULL) {
-any = curr->previous;
-curr->previous = curr->next;
-curr->next = any;
-curr = curr->previous; }
-if(any != NULL )
-*head = any->previous;
+NODE* newNode = (NODE*)malloc(sizeof(NODE));
+  
+   //Set the newNode->value as the parameter value
+   newNode->value = value;
+   newNode->nextPointer = NULL;
+     
+   //Checking the node which we are going to insert is a first node
+if (head == NULL) {
+newNode->previousPointer = NULL;
+head = newNode;
+}
+   //Otherwise add the node at the end of the doubly linked list
+   else{
+       //Store the head into the traversalNode pointer
+       NODE *traversalNode = head;
+      
+       //Traverse till we reach the last node
+       while (traversalNode->nextPointer != NULL)
+           traversalNode = traversalNode->nextPointer;
+  
+       traversalNode->nextPointer = newNode;
+       newNode->previousPointer = traversalNode;
+   }
+  
 }
 
+//Below function will display the value of each node present inside the doubly linked list
+void display(){
 
-void print_doubly_LL(struct Node *node)
-{
-while(node != NULL){
-printf("%c ", node->data);
-node = node->next; }
+   //Storing head into the traversalNode
+NODE* traversalNode=head;
+
+//Iterate over each node of the doubly linked list
+while (traversalNode != NULL) {
+printf("%c ", traversalNode->value);
+      
+       //Point to the next node in the doubly linked list
+traversalNode = traversalNode->nextPointer;
 }
-
-
-
-int main(void) {
-struct Node* head = NULL;
-push(&head, 'R');
-push(&head, 'a');
-push(&head, 'd');
-push(&head, 'A');
-push(&head, 'r');
-print_doubly_LL(head);
-rev_dul_LL(&head);
-
-printf("\nReversed Doubly Linked list will be:\n");
-
-print_doubly_LL(head);
-
-
-return 0;
 
 }
 
+int main(){
+   insertAtEnd('r');
+   insertAtEnd('A');
+   insertAtEnd('d');
+   insertAtEnd('a');
+   insertAtEnd('R');
+   printf("Data in doubly linked list before reversing is\n");
+   display();
+
+   reverse();
+
+   printf("\nData in doubly linked list after reversing is\n");
+   display();
+  
+}
 
 
 
