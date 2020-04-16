@@ -17,7 +17,7 @@ int main()
 {
    char a[MAX];
    printf("Enter string : ");
-   gets(a);   //Taking Input From User
+   scanf("%s",a);   //Taking Input From User
    //Printing Output
    if(strlen(a)>0)
        printf("Reverse String : %s",rev(a));
@@ -42,6 +42,8 @@ char pop()
        printf("\n Stack Underflow");
    else
        return stack[top--];
+       
+       return 0;
 }
 //Reverse Function Takes Character array and returns reverse string by using stack operations
 char* rev(char a[])
@@ -53,6 +55,8 @@ char* rev(char a[])
        a[i]=pop();       //Calling pop()
    return a;
 }
+
+
 
 
 
