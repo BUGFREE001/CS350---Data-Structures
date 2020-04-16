@@ -252,12 +252,128 @@ void dul_display() // function body for dul_display
 } // end dul_display function
 
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef struct link_list
+{
+struct link_list *prev;
+int info;
+struct link_list *next;
+}node;
+
+//function prototype
+void insert(node**, int);
+void dul_LL_delete_index(node**, int);
+void display(node*);
+
+
+//main function
+int main()
+{
+int c, n;
+node *head = NULL;
+
+while(1)
+{
+
+printf("\n1. Insertion");
+printf("\n2. Deletion");
+printf("\n3. Display");
+printf("\n4. exit");
+
+printf("\n\nEnter a choice(1-4): ");
+scanf("%d",&c);
+
+switch(c)
+{
+case 1:
+printf("Enter value: ");
+scanf("%d", &n);
+insert(&head, n);
+break;
+case 2:
+printf("Enter index: ");
+scanf("%d", &n);
+dul_LL_delete_index(&head, n);
+break;
+case 3:
+display(head);
+break;
+case 4: exit(0);
+}
+}
+}
+
+
+void display(node *ls)
+{
+while(ls!=NULL){
+printf("%d\t",ls->info);
+ls=ls->next;
+}
+}
+
+void insert(node**ls, int n)
+{
+
+node *newnode = (node*)malloc(sizeof(node));
+newnode->info=n;
+newnode->prev=NULL;
+newnode->next=NULL;
+
+if(*ls==NULL){
+*ls=newnode;
+return;
+}
+
+node*tmp = *ls;
+while(tmp->next!=NULL)
+{
+tmp = tmp->next;
+}
+
+tmp->next=newnode;
+newnode->prev=tmp;
+}
+
+void dul_LL_delete_index(node**ls, int n)
+{
+//check if the list is empty
+if(*ls==NULL) return;
+node *t = *ls;
+int i;
+for(i=0; t!=NULL&&i<n-1; i++)
+{
+t = t->next;
+}
+if(t==NULL) return;
+
+node *p = t->prev;
+node *q = t->next;
+
+p->next = q;
+if(q!=NULL)
+q->prev = p;
+
+free(t);
+
+}
+
+
 
 
 
 
 
 -----------------------------------------------------------------------------------------------------------------------------------
+
 
 
 
