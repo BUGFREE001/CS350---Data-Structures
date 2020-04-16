@@ -1,4 +1,94 @@
+#1
+
+
+
+#include <stdio.h>
+#include <string.h>
+// defining global max value as 20
+#define MAX 25
+
+
+// Declaring queue for strings
+char queue[MAX][MAX];
+//Declaring a temporary string
+char temp[MAX];
+//declaring variables for queue operations
+int front = -1, rear = -1;
+// Definition of enqueue function
+void enqueue(char* ptr) {
+   // if no elements are there in queue..
+   if (front == -1 && rear == -1)
+       // ..then make front and rear as 0
+       front = rear = 0;
+   // if queue is not empty then ..
+   else
+       // ..increment queue by 1 to store another element
+       rear = rear + 1;
+   // enque given element at rear position
+   strcpy(queue[rear], ptr);
+}
+char* dequeue() {
+   // we deque an element from queue
+   // so we remove first(front) element, store front element in temp
+   strcpy(temp, queue[front]);
+   // if no elements are there in queue..
+   if (front == rear)
+       // then make front and rear as -1
+       front = rear = -1;
+   //if elements present
+   else
+       // we remove front element
+       // so make next element as front
+       front = front + 1;
+   // returning front element
+   return temp;
+}
+// Definition for genBin function to generate binary numbers
+void genBin(unsigned int n) {
+   char str1[MAX],str2[MAX];
+   //Initially we enqueue 1 to queue
+   enqueue("1");
+   // loop for iterating through all numbers upto n
+   for(unsigned int i=0;i<n;i++){
+       // first deque an element from queue
+       // store it in a string
+       strcpy(str1,dequeue());
+       // print that element
+       printf("%s ,", str1);
+       // now copy this string to anohter string
+       strcpy(str2,str1);
+       // concat 0 to the string1
+       strcat(str1,"0");
+       // concat 1 to the string2
+       strcat(str2,"1");
+       // Add both string to the queue
+       enqueue(str1);
+       enqueue(str2);
+}
+}
+
+int main() {
+unsigned int n;
+// prompt user for input a number
+printf("Enter the value : ");
+scanf("%u", &n);
+//Call the function genBin to generate nbinary numbers
+genBin(n);
+return 0;
+}
+
+
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
 #2
+
 
 
 
