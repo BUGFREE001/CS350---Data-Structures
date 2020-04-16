@@ -242,92 +242,86 @@ printf("After deletion\n");
 
 
 
-Note: Do NOT use online complier when you run the code, to avoid warnings, please use other complier
+#include <stdio.h>
+#include<stdlib.h>
+  
 
+struct Node {
+int data;
+struct Node* prev;
+struct Node* next;
+};
 
+struct Node* append(struct Node*list , int data)
+{
+struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+struct Node* current = list;
+newNode->data = data;
+newNode->next = NULL;
+newNode->prev = NULL;
+if(list == NULL) return newNode;
+  
+while(current->next!=NULL)current = current->next;
+  
+newNode->prev = current;
+current->next = newNode;
+return list;
+}
 
+void printList(struct Node *head)
+{
+struct Node *current= head;
+while (current!=NULL)
+{
+printf("%d ",current->data);
+current = current->next;
+}
+printf("\n\n");
+}
 
-#include <stdio.h>     
+void Sort(struct Node *head)
+{
+int isSwap;
+struct Node *current,*lptr = NULL;
 
-struct node{
-        int data;
-        struct node *previous;
-        struct node *next;
-};      
-struct node *head, *tail = NULL;  
-    void addNode(int data) {
-        struct node *newNode = (struct node*)malloc(sizeof(struct node));
-        newNode->data = data;
-        if(head == NULL) {  
-            head = tail = newNode;
-            head->previous = NULL;
-            tail->next = NULL;
-        }
-        else {  
-            tail->next = newNode;
-            newNode->previous = tail;
-            tail = newNode;
-            tail->next = NULL;
-        }
-    }
-void sortList() {
-        struct node *current = NULL, *index = NULL;
-        int temp;
-        if(head == NULL) {
-            return;
-        }
-        else {
-            for(current = head; current->next != NULL; current = current->next) {
-                for(index = current->next; index != NULL; index = index->next) {
-                    if(current->data > index->data) {
-                        temp = current->data;
-                        current->data = index->data;
-                        index->data = temp;
-                    }
-                }
-            }
-        }
-    }
-void display() {
-        struct node *current = head;
-        if(head == NULL) {
-            printf("List is empty\n");
-            return;
-        }
-        printf("NULL<-Head");
-        while(current != NULL) {
-            printf("<=>%d",current->data);
-            current = current->next;
-        }
-       printf("->NULL\n");
-    }
-int   srt_dul_LL(lst){
-       char *string = lst, *ptr = string;
-        while (*ptr) {
-            if (isdigit(*ptr)) {
-                long val = strtol(ptr, &ptr, 10);
-                addNode(val);
-            } else {
-                ptr++;
-            }
-        }
-        return 0;
-   }
-     
+if (head == NULL)return;
+do
+{
+isSwap = 0;
+current = head;
+
+while (current->next != lptr)
+{
+if (current->data > current->next->data)
+{
+int temp = current->data;
+               current->data = current->next->data ;
+               current->next->data = temp;
+isSwap = 1;
+}
+current = current->next;
+}
+lptr = current;
+}
+while (isSwap);
+}
+  
 int main()
-    {
-       char string[20];
-        printf("Enter LIST: ");
-        scanf("%s", string);
-        srt_dul_LL(string);
-        printf("Original list: \n");
-        display();
-        sortList();
-        printf("Sorted list: \n");
-        display();
-        return 0;
-    }
-    
+{
+struct Node* head = NULL;
+head = append(head , 2);
+head = append(head , 0);
+head = append(head , 2);
+head = append(head , 0);
+printf("Unsorted List : ");
+printList(head);
+
+Sort(head);
+   printf("Sorted List : ");
+printList(head);
+
+return 0;
+}
     
     
     
