@@ -1,10 +1,149 @@
 #1
 
+
+
+#include<stdio.h>
+#include<stdlib.h>
+
+//structure to represent the nodes of linked list
+struct node{
+int data;
+struct node *next;
+};
+
+int length=0;//length variable keeps track of the length of the linked list
+struct node *head=NULL;//head and last variables holds the address of the head and tail of the LL
+struct node *last=NULL;
+
+void insertNode(int data){//this method is to insert the node at the beginning of the list
+//this method is for making a linked list for testing purpose
+struct node *newNode=(struct node*)malloc(sizeof(struct node));
+newNode->data=data;
+struct node *temp=head;
+length++;
+if(head==NULL){
+newNode->next=newNode;
+head=newNode;
+last=newNode;
+}else{
+last->next=newNode;
+newNode->next=head;
+head=newNode;
+}
+
+}
+
+//this function is for deleting the node of the linked list based on key value
+//it takes in address of the head and key to be deleted
+struct node *cirLL_delete_key(struct node *head,int key){
+if(head==NULL){//if the list is empty
+printf("not necessary to delete anything\n");
+}else{length--;
+struct node *curr=head;
+struct node *prev=last;
+if(head->data==key){//if first element is the node to be deleted
+prev->next=head->next;
+head=head->next;
+printf("%d is deleted\n",key);
+return head;
+}
+do{//this is to traverse the list
+if(curr->data==key){
+printf("%d is deleted\n",key);
+prev->next=curr->next;
+return head;
+}
+prev=curr;
+curr=curr->next;
+}while(curr!=head);
+//if the element is not present in the list
+printf("Element is not in the list");
+length++;
+
+}
+return head;
+}
+
+//this function is to delete the node based on index
+struct node *cirLL_delete_index(struct node *head,int index)
+{
+int temp=1;
+if(head==NULL || index<1 || index>length){//if the list is empty or the index specified is in valid
+printf("not necessary to delete anything\n");
+return head;
+}
+struct node *curr=head;
+struct node *prev=last;
+
+length--;
+do{//traverse the list
+
+if(temp==index && index==1){//if we wish to delete first element
+prev->next=head->next;printf("%d is deleted\n",curr->data);
+head=head->next;
+return head;
+}
+if(temp==index){
+printf("%d is deleted\n",curr->data);
+prev->next=curr->next;
+return head;
+}
+temp++;
+prev=curr;
+curr=curr->next;
+}while(curr!=head);
+
+return 0;
+
+}
+
+
+
+void printCLL(){//this function will traverse through the list and print the list elements
+struct node *temp=head;
+do{
+printf("%d\n",temp->data);
+temp=temp->next;
+}while(temp!=head);
+}
+
+
+int main(){//driver method
+int tem;
+//I wrote a testing code to initially insert 5 elements into the list and then after testing the two mentioned functions
+for(int i=1;i<=5;i++){
+printf("Enter %d th element",i);
+scanf("%d",&tem);
+insertNode(tem);
+}
+printCLL();
+printf("\nDeletion with key\n");
+
+printf("Enter key to be deleted");
+scanf("%d",&tem);
+head=cirLL_delete_key(head,tem);//testing first function
+printCLL();
+
+printf("\nDeletion with Index\n");
+printf("Enter the index of the element to be deleted\n");
+scanf("%d",&tem);
+head=cirLL_delete_index(head,tem);//testing second function
+printCLL();
+
+}
+
+
+
+
+
+
+
 --------------------------------------------------------------------------------------------------------------------------------------
 
 
 
 #2
+
 
 
 
@@ -88,6 +227,8 @@ printf("After deletion\n");
   
    return 0;
 }
+
+
 
 
 
@@ -190,7 +331,9 @@ int main()
     
     
     
+    
 -----------------------------------------------------------------------------------------------------------------------------------
+
 
 
 
