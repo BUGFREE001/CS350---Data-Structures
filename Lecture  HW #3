@@ -92,7 +92,148 @@ int main(){
 
 
 
+#2
+
+
+
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<stdbool.h>
+
+
+struct Node
+{
+char data;
+struct Node* next;
+};
+  
+/* A utility function to insert a node at the beginning of
+a linked list*/
+void push(struct Node** head_ref, char new_data);
+  
+/* A utility function to check if given data is present in a list */
+bool isPresent(struct Node *head, char data);
+/* Function to get common elements of two linked lists
+l and m */
+struct Node *commElem(struct Node *l,
+struct Node *m)
+{
+struct Node *result = NULL;
+struct Node *t1 = l;
+  
+// Traverse l and search each element of it in
+// list2. If the element is present in m, then
+// insert the element to result
+  while (t1 != NULL)
+{
+if (isPresent(m, t1->data))
+{
+   if(!isPresent(result,t1->data))
+   {
+   push (&result, t1->data);   
+   }
+}
+t1 = t1->next;
+}
+
+return 0;
+}
+/* A utility function to insert a node at the begining of a linked list*/
+void push (struct Node** head_ref, char new_data)
+{
+/* allocate node */
+struct Node* new_node =
+(struct Node*) malloc(sizeof(struct Node));
+  
+/* put in the data */
+new_node->data = new_data;
+  
+/* link the old list off the new node */
+new_node->next = (*head_ref);
+  
+/* move the head to point to the new node */
+(*head_ref) = new_node;
+}
+  
+/* A utility function to print a linked list*/
+void printList (struct Node *node)
+{
+while (node != NULL)
+{
+printf ("%c ", node->data);
+node = node->next;
+}
+}
+/* A utility function that returns true if data is
+present in linked list else return false */
+bool isPresent (struct Node *head, char data)
+{
+struct Node *t = head;
+while (t != NULL)
+{
+if (t->data == data)
+return 1;
+t = t->next;
+}
+return 0;
+}
+int main()
+{
+/* Start with the empty list */
+struct Node* l = NULL;
+struct Node* m = NULL;
+struct Node* common = NULL;
+while(1){
+   char c1,c2;
+   printf("Press 1 to enter in list l\n");
+   printf("Press 2 to enter in list m\n");
+   printf("press 3 to exit\n");
+   printf("enter your choice");
+   int ch;
+   scanf("%d",&ch);
+   if(ch==1)
+   {
+   printf("enter the character for list l\n");
+   fflush(stdin);
+scanf("%c",&c1);
+   push(&l, c1);   
+       }
+           if(ch==2)
+   {
+   printf("enter the character for list m\n");
+   fflush(stdin);
+scanf("%c",&c2);
+   push(&m, c2);   
+       }
+       if(ch==3)break;
+   }
+common=commElem(l,m);
+printf ("\n First list is \n");
+printList (l);
+  
+printf ("\n Second list is \n");
+printList (m);
+  
+printf ("\n Intersection list is \n");
+printList (common);
+   return 0;
+}
+
+
+
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
 #3
+
 
 
 
@@ -299,5 +440,7 @@ printf("\nSecond Circular Linked List");
 printList(head2);   
   
 getchar();
+
 return 0;
+
 }
