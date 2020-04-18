@@ -252,6 +252,10 @@ void dul_display() // function body for dul_display
 } // end dul_display function
 
 
+
+
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -449,10 +453,17 @@ while (isSwap);
 int main()
 {
 struct Node* head = NULL;
-head = append(head , 2);
-head = append(head , 0);
-head = append(head , 2);
-head = append(head , 0);
+int n,num,i;
+// After you type the first number, you should press the "Enter" button in order to type in the next number
+printf("Enter number of elements want to insert : ");
+scanf("%d",&n);
+
+for(i=0;i<n;i++){
+    printf("Enter element : ");
+    scanf("%d",&num);
+    head = append(head , num);
+}
+
 printf("Unsorted List : ");
 printList(head);
 
@@ -466,8 +477,8 @@ return 0;
     
     
     
+    
 -----------------------------------------------------------------------------------------------------------------------------------
-
 
 
 
