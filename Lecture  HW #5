@@ -291,13 +291,8 @@ return 0;
 
 
 
-// disable warning in visual studio
-
-
-
-
-
 #include <stdio.h>
+#include <stdlib.h>
 #pragma warning(disable : 4996) // disable warning in visual studio
 #define MAX_SIZE 100 // maximum size of array
 
@@ -313,7 +308,7 @@ int main() {
    char* simplified = simplify(line);
    // print result
    printf("\nResult: ");
-   printf(simplified);
+   printf("%s",simplified);
    printf("\n");
   
    return 0;
