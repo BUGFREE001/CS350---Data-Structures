@@ -287,12 +287,14 @@ return 0;
 
 
 
+
 #4
 
 
 
 #include <stdio.h>
 #include <stdlib.h>
+
 #pragma warning(disable : 4996) // disable warning in visual studio
 #define MAX_SIZE 100 // maximum size of array
 
