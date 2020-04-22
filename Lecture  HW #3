@@ -444,3 +444,159 @@ getchar();
 return 0;
 
 }
+
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+#5
+
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+/* Link list node */
+struct Node {
+   char d;
+   struct Node* left;
+   struct Node* right;
+};
+
+// function to find the size of
+// Doubly Linked List
+int size(struct Node* head_ref)
+{
+   struct Node* curr = head_ref;
+   int sz = 0;
+   while (curr != NULL) {
+       curr = curr->right;
+       sz++;
+   }
+   return sz;
+}
+
+/* Function to Display linked list */
+void DisplayList(struct Node* node)
+{
+   while (node->right != NULL) {
+       printf("%c <=> ",node->d);
+       node = node->right;
+   }
+   printf("%c <=> ",node->d);
+}
+
+// Function to insert a node at the
+// beginning of the Doubly Linked List
+void push(struct Node** head_ref, int new_data)
+{
+   struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
+   new_node->d = new_data;
+   new_node->left = NULL;
+   new_node->right = (*head_ref);
+   if ((*head_ref) != NULL)
+       (*head_ref)->left = new_node;
+   *head_ref = new_node;
+}
+
+// Function to rotate a doubly linked
+// list clockwise and update the head
+void rotate_DLL(struct Node** head_ref, int N)
+{
+   int sz;
+   sz=size(*head_ref);
+   /* If N is greater than the size of Doubly
+   Linked List, we have to deduce it in the range
+   of Doubly linked list size by taking modulo with the
+   length of the list.*/
+   N = N%sz;
+
+   /* We will update N by subtracting it's value length of
+   the list. After this the question will reduce to
+   counter clockwise rotation of linked list to N places*/
+   N = sz - N;
+
+   if (N == 0) // result remain same
+       return;
+
+   struct Node* current = *head_ref;
+
+   // current will either point to Nth
+   // or NULL after this loop.
+   int count = 1;
+   while (count < N && current != NULL) {
+       current = current->right;
+       count++;
+   }
+
+   // If current is NULL, N is greater
+   // than or equal to count of nodes
+   // in linked list
+   // Don't change the list in this case
+   if (current == NULL) // N>=size(list) no change for this case.
+       return;
+
+   // current points to Nth node.
+     
+   struct Node* NthNode = current;
+
+   // current will point to last node
+  
+   while (current->right != NULL)
+       current = current->right;
+
+   // Change next of last node to previous
+   // head.
+   current->right = *head_ref;
+
+  
+   (*head_ref)->left = current;
+
+  
+   *head_ref = NthNode->right;
+
+   // Change left of New Head node to NULL
+   // Because left of Head Node in Doubly
+   // linked list is NULL
+   (*head_ref)->left = NULL;
+
+   // Change right of Nth node to NULL
+  
+   NthNode->right = NULL;
+}
+
+
+// Driver code
+int main(void)
+{
+   /* Start with the empty list */
+   struct Node* head = NULL;
+
+   /* Create the doubly linked
+   list c<->i<->v<->i<->c */
+   push(&head, 'c');
+   push(&head, 'i');
+   push(&head, 'v');
+   push(&head, 'i');
+   push(&head, 'c');
+
+   int N = 3; //change values of N to clockwise rotate the list starting from Nth
+   //node . make sure that N should be less or equal the size of the list.
+
+  
+
+   printf("Given Doubly linked list \n");
+   DisplayList(head);
+   rotate_DLL(&head, N); //rotate_DLL(list,3)
+
+   printf("\nRotated Linked list clockwise \n");
+   DisplayList(head); // Display the resulted list.
+
+   return 0;
+}
